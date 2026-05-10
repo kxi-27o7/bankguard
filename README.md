@@ -17,7 +17,7 @@ The trained model is not included in this repository because it exceeds GitHub's
 
 Download the model here:
 
-[MODEL_DOWNLOAD_LINK]
+[(https://drive.google.com/drive/folders/1kgHz4LNbMl-mfm1qY7pa1EonwPWVvraR?usp=sharing)]
 
 After downloading, place the model file inside:
 
