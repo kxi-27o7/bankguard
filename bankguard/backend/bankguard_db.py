@@ -1,4 +1,6 @@
 from pymongo import MongoClient, ReturnDocument
+from datetime import datetime
+from typing import Optional, Dict
 
 class BankguardManager:
     def __init__(self, connection_string):
@@ -69,19 +71,22 @@ class BankguardManager:
 
         # 4. Final Document Construction
         tx_id = self._get_next_id("transactionid")
+        # Build base transaction document
         final_doc = {
             "transactionID": tx_id,
-            "transactionType": tx_data['transactionType'],
-            "amount": tx_data['amount'],
+            "transactionType": tx_data.get('transactionType'),
+            "amount": float(tx_data.get('amount', 0.0)),
             "initiator": initiator_id,
-            "oldBalInitiator": old_balance,
-            "newBalInitiator": old_balance - tx_data['amount'],
-            "recipient": tx_data['recipient'],
-            "oldBalRecipient": 0.0, # Simplified for mockup (Change if necessary)
-            "newBalRecipient": tx_data['amount'],
-            "isFraud": is_fraud_prediction
+            "oldBalInitiator": float(old_balance),
+            "newBalInitiator": float(old_balance - tx_data.get('amount', 0.0)),
+            "recipient": tx_data.get('recipient'),
+            "oldBalRecipient": float(tx_data.get('oldBalRecipient', 0.0)),
+            "newBalRecipient": float(tx_data.get('newBalRecipient', tx_data.get('amount', 0.0))),
+            "isFraud": bool(is_fraud_prediction),
+            "created_at": datetime.utcnow()
         }
-        
+
+        # Insert the transaction document into MongoDB
         self.transactions.insert_one(final_doc)
         return final_doc
 
@@ -90,5 +95,40 @@ class BankguardManager:
         """Removes a transaction (use only if necessary)."""
         return self.transactions.delete_one({"transactionID": transaction_id})
     
+
+    def save_transaction_record(self,
+                                tx_raw: Dict,
+                                features: Optional[Dict] = None,
+                                prediction: Optional[int] = None,
+                                probability: Optional[float] = None,
+                                user_id: Optional[int] = None):
+        """
+        Save a full transaction record including derived features and model output.
+
+        - `tx_raw`: the original 8 raw fields provided by the frontend.
+        - `features`: dictionary of derived features used by the model (keeps parity with training).
+        - `prediction`: model label (0 or 1).
+        - `probability`: model probability for the positive class (if available).
+        - `user_id`: optional user identifier to link the record to a user account.
+
+        This method is intentionally additive and does not change existing `process_transaction` behaviour.
+        Call this from prediction endpoint after computing features and running the model.
+        """
+        tx_id = self._get_next_id("transactionid")
+
+        record = {
+            "transactionID": tx_id,
+            "raw": tx_raw,
+            "features": features or {},
+            "prediction": int(prediction) if prediction is not None else None,
+            "probability": float(probability) if probability is not None else None,
+            "user_id": user_id,
+            "saved_at": datetime.utcnow()
+        }
+
+        # Store the full record in the `transactions` collection
+        self.transactions.insert_one(record)
+        return record
+
 
 
