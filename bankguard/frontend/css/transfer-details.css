@@ -193,13 +193,6 @@ body {
   margin-top: 6px;
 }
 
-.error-message {
-  display: block;
-  color: #dc2626;
-  font-size: 12px;
-  margin-top: 6px;
-}
-
 /* Info Alert */
 .info-alert {
   min-height: 48px;
@@ -418,4 +411,32 @@ body {
   .analysis-header h2 {
     font-size: 20px;
   }
+}
+
+.input-error {
+  border-color: #dc2626;
+  background-color: #fff5f5;
+}
+
+.error-message {
+  display: block;
+  color: #dc2626;
+  font-size: 11px;
+  margin-top: 6px;
+  line-height: 1.35;
+}
+
+.form-status {
+  min-height: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.form-status.error {
+  color: #dc2626;
+}
+
+.form-status.success {
+  color: #15803d;
 }

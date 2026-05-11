@@ -6,6 +6,7 @@
   <title>Login - BankGuard</title>
   <link rel="stylesheet" href="../css/login.css">
 </head>
+<script src="../js/login.js"></script>
 <body>
   <main class="login-page">
     <section class="login-container">
@@ -51,7 +52,7 @@
             Please enter your credentials to access your secure environment.
           </p>
 
-          <form action="transfer-details.html" method="GET">
+          <form id="loginForm" action="transfer-details.html" method="GET" novalidate>
             <div class="form-group">
               <label for="email">EMAIL ADDRESS</label>
 
@@ -59,9 +60,9 @@
                 <span class="input-icon">✉</span>
                 <input
                   type="email"
-                  id="email"
+                  id="loginEmail"
                   name="email"
-                  placeholder="name@company.com"
+                  placeholder="Enter your email address"
                   required
                 >
               </div>
@@ -80,9 +81,9 @@
 
                 <input
                   type="password"
-                  id="password"
+                  id="loginPassword"
                   name="password"
-                  placeholder="••••••••"
+                  placeholder="Enter your password"
                   required
                 >
 
@@ -91,10 +92,14 @@
             </div>
 
             <div class="remember-row">
-              <input type="checkbox" id="remember" name="remember">
-              <label for="remember">Remember this device for 30 days</label>
+              <input
+                type="checkbox"
+                id="rememberDevice"
+                name="rememberDevice"
+              >
+              <label for="rememberDevice">Remember this device for 30 days</label>
             </div>
-
+            <div id="loginStatus" class="form-status"></div>
             <button type="submit" class="login-button">
               <span>↪</span>
               Secure Login
