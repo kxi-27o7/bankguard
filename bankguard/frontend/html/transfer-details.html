@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../css/transfer-details.css">
 </head>
 
+<script src="../js/transfer-details.js"></script>
 <body>
   <!-- Top Navbar -->
   <header class="topbar">
@@ -32,7 +33,7 @@
     <section class="content-grid">
       <!-- Transaction Input Form Card -->
       <div class="transfer-card">
-        <form action="result.html" method="GET">
+        <form id="transactionForm" action="result.html" method="GET">
           <div class="form-grid">
 
             <div class="form-group">
@@ -170,6 +171,7 @@
             </p>
           </div>
 
+          <div id="formStatus" class="form-status"></div>
           <button type="submit" class="submit-button">
             Validate Transaction
             <span>→</span>
