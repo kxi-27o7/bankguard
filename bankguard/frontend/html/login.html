@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - BankGuard</title>
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <main class="login-page">
+    <section class="login-container">
+      <!-- Left Panel -->
+      <div class="login-left">
+        <div class="left-overlay"></div>
+
+        <div class="brand-content">
+          <div class="brand-title">
+            <div class="shield-icon">⬟</div>
+            <h1>BankGuard</h1>
+          </div>
+
+          <p class="brand-description">
+            Institutional-grade fraud detection and vigilance.
+            Access your secure dashboard to monitor real-time transaction integrity.
+          </p>
+
+          <div class="feature-list">
+            <div class="feature-item">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+                <path d="M4.35009 13.3929L8 16L11.6499 13.3929C13.7523 11.8912 15 9.46667 15 6.88306V3L8 0L1 3V6.88306C1 9.46667 2.24773 11.8912 4.35009 13.3929Z" fill="#ffffff"></path>
+              </svg>
+              <p>256-BIT ENCRYPTION</p>
+            </div>
+
+            <div class="feature-item">
+              <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#ffffff" d="M359.168 768H160a32 32 0 0 1-32-32V192H64a32 32 0 0 1 0-64h896a32 32 0 1 1 0 64h-64v544a32 32 0 0 1-32 32H665.216l110.848 192h-73.856L591.36 768H433.024L322.176 960H248.32l110.848-192zM832 192H192v512h640V192zM342.656 534.656a32 32 0 1 1-45.312-45.312L444.992 341.76l125.44 94.08L679.04 300.032a32 32 0 1 1 49.92 39.936L581.632 524.224 451.008 426.24 342.656 534.592z"></path>
+              </svg>
+              <p>REAL-TIME MONITORING</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="login-right">
+        <div class="form-wrapper">
+          <h2>Welcome Back</h2>
+
+          <p class="form-subtitle">
+            Please enter your credentials to access your secure environment.
+          </p>
+
+          <form action="transfer-details.html" method="GET">
+            <div class="form-group">
+              <label for="email">EMAIL ADDRESS</label>
+
+              <div class="input-box">
+                <span class="input-icon">✉</span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="name@company.com"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="form-group password-group">
+              <div class="password-label-row">
+                <label for="password">PASSWORD</label>
+                <a href="#" class="forgot-link">Forgot Password?</a>
+              </div>
+
+              <div class="input-box">
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#0b1d43">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M4 6V4C4 1.79086 5.79086 0 8 0C10.2091 0 12 1.79086 12 4V6H14V16H2V6H4ZM6 4C6 2.89543 6.89543 2 8 2C9.10457 2 10 2.89543 10 4V6H6V4ZM7 13V9H9V13H7Z" fill="#000000"></path>
+                </svg>
+
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="••••••••"
+                  required
+                >
+
+                <span class="eye-icon"></span>
+              </div>
+            </div>
+
+            <div class="remember-row">
+              <input type="checkbox" id="remember" name="remember">
+              <label for="remember">Remember this device for 30 days</label>
+            </div>
+
+            <button type="submit" class="login-button">
+              <span>↪</span>
+              Secure Login
+            </button>
+          </form>
+
+          <div class="register-link">
+            New to BankGuard?
+            <a href="register.html">Create an account</a>
+          </div>
+
+          <div class="admin-link">
+            Need access to BankGuard?
+            <a href="#">Contact System Admin</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-brand">
+      <h3>BankGuard</h3>
+      <p>© 2024 BankGuard Systems. All rights reserved. Secure Vigilance Monitoring.</p>
+    </div>
+
+    <nav class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Security Disclosure</a>
+      <a href="#">Contact Support</a>
+    </nav>
+  </footer>
+</body>
+</html>

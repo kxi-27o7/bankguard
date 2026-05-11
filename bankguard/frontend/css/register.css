@@ -1,0 +1,365 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f3f5fb;
+    color: #111827;
+    min-height: 100vh;
+}
+
+/* Page Layout */
+.register-page {
+    min-height: calc(100vh - 84px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 48px 24px;
+}
+
+.register-container {
+    width: 960px;
+    min-height: 505px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+/* Left Panel */
+.register-left {
+    background-color: #071a3d;
+    color: #ffffff;
+    padding: 34px 32px;
+    display: flex;
+    align-items: center;
+}
+
+.left-content {
+    width: 100%;
+}
+
+.left-content h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.left-content p {
+    max-width: 390px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #c6d1e6;
+    margin-bottom: 28px;
+}
+
+.chip-image {
+    width: 100%;
+    height: 170px;
+    border-radius: 2px;
+    margin-bottom: 26px;
+    background-image:
+        linear-gradient(rgba(7, 26, 61, 0.2), rgba(7, 26, 61, 0.45)),
+        url("https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop");
+    background-size: cover;
+    background-position: center;
+}
+
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff;
+}
+
+
+
+.feature-item span {
+    font-size: 14px;
+}
+
+.feature-item p {
+    margin: 0;
+    font-size: 12px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.feature-item svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    display: block;
+}
+
+/* Right Panel */
+.register-right {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 44px 40px;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 390px;
+}
+
+.form-wrapper h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #14213d;
+    margin-bottom: 6px;
+}
+
+.form-subtitle {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 28px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: #4b5563;
+    letter-spacing: 0.5px;
+    margin-bottom: 7px;
+}
+
+.input-box {
+    height: 43px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    background-color: #f0f0f2;
+    padding: 0 12px;
+}
+
+.input-box:focus-within {
+    border-color: #071a3d;
+    background-color: #ffffff;
+}
+
+.input-box > svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.input-box > svg path {
+    fill: #6b7280;
+}
+
+.input-icon {
+    font-size: 13px;
+    color: #6b7280;
+    margin-right: 10px;
+}
+
+.input-box input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #111827;
+    font-size: 13px;
+}
+
+.input-box input::placeholder {
+    color: #9ca3af;
+}
+
+/* Password Row */
+.password-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.password-row .form-group {
+    margin-bottom: 16px;
+}
+
+/* Terms */
+.terms-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-bottom: 20px;
+}
+
+.terms-row input {
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+    accent-color: #071a3d;
+}
+
+.terms-row label {
+    font-size: 12px;
+    color: #4b5563;
+    line-height: 1.35;
+}
+
+.terms-row a {
+    color: #071a3d;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.terms-row a:hover {
+    text-decoration: underline;
+}
+
+/* Button */
+.register-button {
+    width: 100%;
+    height: 47px;
+    border: none;
+    border-radius: 5px;
+    background-color: #071a3d;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.register-button:hover {
+    background-color: #0d2857;
+}
+
+.error-message {
+    display: block;
+    margin-top: 6px;
+    color: #dc2626;
+    font-size: 12px;
+}
+
+/* Login Link */
+.login-link {
+    margin-top: 26px;
+    text-align: center;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.login-link a {
+    color: #111827;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+    height: 84px;
+    background-color: #071a3d;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+}
+
+.footer-brand h3 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.footer-brand p {
+    font-size: 10px;
+    color: #b7c4dc;
+    letter-spacing: 0.2px;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.footer-links a {
+    color: #d7deef;
+    font-size: 10px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .register-container {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+
+    .register-left {
+        padding: 34px 28px;
+    }
+
+    .register-right {
+        padding: 38px 28px;
+    }
+
+    .footer {
+        height: auto;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+        padding: 24px;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+}
+
+@media (max-width: 520px) {
+    .register-page {
+        padding: 28px 16px;
+    }
+
+    .left-content h1 {
+        font-size: 22px;
+    }
+
+    .chip-image {
+        height: 145px;
+    }
+
+    .password-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .form-wrapper h2 {
+        font-size: 23px;
+    }
+}
