@@ -3,18 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fraud Detected - BankGuard</title>
+  <title>Detection Results - BankGuard</title>
   <link rel="stylesheet" href="../css/result.css">
 </head>
-<body class="fraud-theme">
-  <!-- Top Navbar -->
+<body id="dynamicBody">
   <header class="topbar">
     <div class="brand-name">BankGuard</div>
-
     <div class="topbar-icons">
       <button class="icon-button" type="button" aria-label="Notification">♧</button>
       <button class="icon-button" type="button" aria-label="Help">?</button>
-
       <a href="login.html" class="profile-avatar" aria-label="Profile">
         <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Profile">
       </a>
@@ -22,103 +19,175 @@
   </header>
 
   <main class="result-page">
-    <!-- Status Banner -->
-    <section class="status-banner">
-      <div class="status-left">
-        <div class="status-icon">!</div>
-
-        <div>
-          <h1>Fraudulent Activity Detected</h1>
-          <p>
-            Our real-time monitoring system has flagged high-risk behavior on transaction TXN-9842-BA.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Fraud Result Layout -->
-    <section class="fraud-grid">
-      <div class="fraud-main">
-        <div class="metrics-grid fraud-metrics">
-          <div class="metric-card">
-            <p>RISK SCORE</p>
-            <h3>88<span>/100</span></h3>
-            <div class="risk-line"></div>
-          </div>
-
-          <div class="metric-card">
-            <p>LEGITIMACY CONFIDENCE</p>
-            <h3>12<span>%</span></h3>
-            <small class="danger-pill">Low Confidence</small>
-          </div>
-
-          <div class="metric-card">
-            <p>PATTERN MATCH</p>
-            <h3 class="pattern-danger">◈ Suspicious</h3>
-            <small>Synthetic Identity Heuristic</small>
+    
+    <div id="safeView" style="display: none;">
+      <section class="status-banner">
+        <div class="status-left">
+          <div class="status-icon">✓</div>
+          <div>
+            <h1>No Fraud Detected</h1>
+            <p>The transaction cluster aligns with expected behavioral patterns.</p>
           </div>
         </div>
+        <div class="evaluation-id">
+          <p>EVALUATION ID</p>
+          <strong class="displayTxId">BG-0000</strong>
+        </div>
+      </section>
 
-        <div class="red-flags-card">
-          <div class="red-flags-header">
-            <h2>System Red Flags</h2>
-            <span>3 CRITICAL ALERTS</span>
-          </div>
-
-          <div class="red-flag-row">
-            <div class="flag-icon">⊘</div>
-            <div>
-              <h3>Unusual geographic location</h3>
-              <p>Request originated from a high-risk jurisdiction (Lagos, NG) inconsistent with user profile (New York, US).</p>
+      <section class="safe-grid">
+        <div class="safe-main">
+          <h2>Evaluation Metrics</h2>
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <p>RISK SCORE</p>
+              <h3><span class="displayRisk">12</span> <span>/100</span></h3>
+              <small>Low probability</small>
+            </div>
+            <div class="metric-card">
+              <p>CONFIDENCE</p>
+              <h3><span class="displayProb">99</span> <span>%</span></h3>
+              <small>High certainty</small>
+            </div>
+            <div class="metric-card">
+              <p>PATTERN MATCH</p>
+              <h3>Norm</h3>
+              <small>Standard behavior</small>
             </div>
           </div>
 
-          <div class="red-flag-row">
-            <div class="flag-icon">⊘</div>
-            <div>
-              <h3>New device fingerprint</h3>
-              <p>Access via a previously unassociated mobile browser with spoofed headers and non-standard resolution.</p>
+          <div class="behavior-card">
+            <div class="behavior-header">
+              <h3>Behavioral Analysis</h3>
+              <span>▣</span>
             </div>
-          </div>
-
-          <div class="red-flag-row">
-            <div class="flag-icon">⊘</div>
-            <div>
-              <h3>Velocity threshold exceeded</h3>
-              <p>14 failed authorization attempts recorded within a 180-second window across three different merchant IDs.</p>
+            <div class="behavior-row">
+              <p>Geographic Consistency</p>
+              <strong>Optimal</strong>
+            </div>
+            <div class="behavior-row">
+              <p>Device Fingerprinting</p>
+              <strong>Verified</strong>
+            </div>
+            <div class="behavior-row">
+              <p>Velocity Threshold</p>
+              <strong>Within Limits</strong>
+            </div>
+            <div class="behavior-row">
+              <p>Anomaly Deviation</p>
+              <strong>0.02%</strong>
             </div>
           </div>
         </div>
 
-        <div class="action-row">
-          <button type="button" class="danger-button">✹ Freeze Transaction</button>
-          <button type="button" class="outline-button">⚐ Report to Bank</button>
-          <button type="button" class="outline-button">▣ Review Detailed Logs</button>
+        <aside class="trust-content">
+          <h2>Trust Indicators</h2>
+          <div class="trust-card dark-card">
+            <p class="trust-label">SECURE VIGILANCE</p>
+            <h3>Encryption Active</h3>
+            <p>Every data point in this evaluation has been cross-referenced with BankGuard's proprietary vault using 256-bit end-to-end encryption.</p>
+          </div>
+          <div class="trust-card light-card">
+            <div class="trust-item">
+              <span>↺</span>
+              <div>
+                <h4>History Log</h4>
+                <p>Profile maintains clean transaction history.</p>
+              </div>
+            </div>
+            <div class="trust-item">
+              <span>❖</span>
+              <div>
+                <h4>Institution Verification</h4>
+                <p>Confirmed with 3 partner nodes.</p>
+              </div>
+            </div>
+          </div>
+          <a href="transfer-details.html" class="back-button">
+            <span>←</span> Back to Dashboard
+          </a>
+        </aside>
+      </section>
+    </div>
+
+
+    <div id="fraudView" style="display: none;">
+      <section class="status-banner">
+        <div class="status-left">
+          <div class="status-icon">!</div>
+          <div>
+            <h1>Fraudulent Activity Detected</h1>
+            <p>Our real-time monitoring system has flagged high-risk behavior on this transaction.</p>
+          </div>
         </div>
-      </div>
+        <div class="evaluation-id">
+          <p>EVALUATION ID</p>
+          <strong class="displayTxId">BG-0000</strong>
+        </div>
+      </section>
 
-      <aside class="immediate-card">
-        <h2>Immediate Steps</h2>
-        <ul>
-          <li>Disable all outbound transfers immediately.</li>
-          <li>Change master PIN and login credentials via a secure device.</li>
-          <li>Revoke all active OAuth sessions in settings.</li>
-        </ul>
+      <section class="fraud-grid">
+        <div class="fraud-main">
+          <div class="metrics-grid fraud-metrics">
+            <div class="metric-card">
+              <p>RISK SCORE</p>
+              <h3><span class="displayProb">88</span><span>/100</span></h3>
+              <div class="risk-line"></div>
+            </div>
+            <div class="metric-card">
+              <p>LEGITIMACY CONFIDENCE</p>
+              <h3><span class="displaySafe">12</span><span>%</span></h3>
+              <small class="danger-pill">Low Confidence</small>
+            </div>
+            <div class="metric-card">
+              <p>PATTERN MATCH</p>
+              <h3 class="pattern-danger">◈ Suspicious</h3>
+              <small>Machine Learning Flag</small>
+            </div>
+          </div>
 
-        <a href="transfer-details.html" class="back-button">
-          <span>←</span>
-          Back to Dashboard
-        </a>
-      </aside>
-    </section>
+          <div class="red-flags-card">
+            <div class="red-flags-header">
+              <h2>System Red Flags</h2>
+              <span>CRITICAL ALERTS</span>
+            </div>
+            <div class="red-flag-row">
+              <div class="flag-icon">⊘</div>
+              <div>
+                <h3 id="dynamicFlagTitle">Random Forest Threshold Exceeded</h3>
+                <p>The combination of transaction amount, historical balance changes, and routing patterns triggered an anomaly alert.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button type="button" class="danger-button">✹ Freeze Transaction</button>
+            <button type="button" class="outline-button">⚐ Report to Bank</button>
+            <button type="button" class="outline-button">▣ Review Detailed Logs</button>
+          </div>
+        </div>
+
+        <aside class="immediate-card">
+          <h2>Immediate Steps</h2>
+          <ul>
+            <li>Disable all outbound transfers immediately.</li>
+            <li>Change master PIN and login credentials via a secure device.</li>
+            <li>Revoke all active OAuth sessions in settings.</li>
+          </ul>
+          <a href="transfer-details.html" class="back-button" style="margin-top: 20px;">
+            <span>←</span> Back to Dashboard
+          </a>
+        </aside>
+      </section>
+    </div>
+
   </main>
 
   <footer class="footer">
     <div class="footer-brand">
       <h3>BankGuard</h3>
-      <p>© 2025 BankGuard Systems. All rights reserved. Secure Vigilance Monitoring.</p>
+      <p>© 2024 BankGuard Systems. All rights reserved. Secure Vigilance Monitoring.</p>
     </div>
-
     <nav class="footer-links">
       <a href="#">About Us</a>
       <a href="#">Privacy Policy</a>
@@ -127,5 +196,7 @@
       <a href="#">Contact Support</a>
     </nav>
   </footer>
+
+  <script src="../js/result.js"></script>
 </body>
 </html>
