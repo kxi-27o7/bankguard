@@ -17,27 +17,43 @@ def load_model(path: str):
     return joblib.load(path)
 
 
-def _to_dataframe_row(features: Dict[str, Any]) -> pd.DataFrame:
-    """Convert a features dict into a single-row DataFrame for model input."""
-    # Model was trained with a consistent set of column names. Create a
-    # one-row DataFrame. Caller must ensure keys match training features.
-    return pd.DataFrame([features])
+def _to_dataframe_row(features: Dict[str, Any], model) -> pd.DataFrame:
+    """Convert a features dict into a single-row DataFrame, enforcing training column order."""
+    df = pd.DataFrame([features])
+    
+    # Check if the model has the original feature names saved
+    if hasattr(model, 'feature_names_in_'):
+        expected_columns = model.feature_names_in_
+        
+        # 1. Add any columns the model expects but are missing from our dictionary (fill with 0)
+        for col in expected_columns:
+            if col not in df.columns:
+                df[col] = 0.0
+                
+        # 2. Force the DataFrame to use the EXACT column order the model was trained on
+        df = df[expected_columns]
+        
+    return df
 
 
 def predict(model, features: Dict[str, Any]) -> Tuple[int, Optional[float]]:
     """
     Return (prediction_label, probability_for_positive_or_None).
-
-    - `prediction_label` is int(0/1).
-    - `probability` is the probability for the positive class if model
-      supports `predict_proba`, otherwise `None`.
     """
-    df = _to_dataframe_row(features)
-    pred = model.predict(df)
-    prob = None
-    # Some models expose predict_proba
+    # Pass the model into the dataframe converter so it can check feature_names_in_
+    df = _to_dataframe_row(features, model)
+    
+    # Check if the model supports probabilities
     if hasattr(model, 'predict_proba'):
         proba = model.predict_proba(df)
-        # assume positive class is column 1
-        prob = float(proba[0][1])
-    return int(pred[0]), prob
+        prob = float(proba[0][1]) # Probability of class 1 (Fraud)
+        
+        # If probability is > 25%, flag as fraud
+        custom_threshold = 0.25 
+        pred = 1 if prob >= custom_threshold else 0
+        return pred, prob
+    
+    else:
+        # Fallback if the model doesn't support probabilities
+        pred = model.predict(df)
+        return int(pred[0]), None

@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from pathlib import Path
+from dotenv import load_dotenv
 import os
 
 # Local backend modules
@@ -11,21 +13,89 @@ app = Flask(__name__)
 CORS(app)  # This allows the frontend to talk to the backend
 
 # Initialize your manager
-db_manager = BankguardManager("ACCESSS INPUT STRING HERE") # Change with passkey to database
+load_dotenv()
+db_manager = BankguardManager(os.getenv("MONGO_URL")) # Change with passkey to database
 
 # Load model at startup if available
-MODEL = None
-MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'ml', 'model', 'model.pkl'))
-if not os.path.exists(MODEL_PATH):
-    alt = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'ml', 'model', 'model.joblib'))
-    if os.path.exists(alt):
-        MODEL_PATH = alt
+BASE_DIR = Path(__file__).resolve().parent.parent # Finds the parent folder
+MODEL_PATH = BASE_DIR / 'ml' / 'model' / 'model.pkl'
+if not MODEL_PATH.exists():
+    MODEL_PATH = BASE_DIR / 'ml' / 'model' / 'model.joblib'
 
 try:
     if os.path.exists(MODEL_PATH):
         MODEL = load_model(MODEL_PATH)
+    
 except Exception:
     MODEL = None
+
+
+@app.route('/register', methods=['POST'])
+def register_user():
+    """Endpoint to handle new user registrations"""
+    data = request.get_json()
+    
+    if not data:
+        return jsonify({'error': 'No JSON data provided'}), 400
+
+    name = data.get('fullName')
+    email = data.get('email')
+    password = data.get('password')
+
+    # Basic backend validation
+    if not name or not email or not password:
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    try:
+        # This will auto-increment the ID and save to MongoDB
+        new_user_id = db_manager.add_user(name, email, password)
+        
+        return jsonify({
+            'success': True, 
+            'userID': new_user_id,
+            'message': 'Account created successfully'
+        }), 201
+        
+    except Exception as e:
+        return jsonify({'error': f"Database error: {str(e)}"}), 500
+
+
+@app.route('/login', methods=['POST'])
+def login_user():
+    """Endpoint to handle user logins"""
+    data = request.get_json()
+    
+    if not data:
+        return jsonify({'error': 'No JSON data provided'}), 400
+
+    email = data.get('email')
+    password = data.get('password')
+
+    if not email or not password:
+        return jsonify({'error': 'Missing email or password'}), 400
+
+    try:
+        # Search the database for a user with this email
+        user = db_manager.users.find_one({'email': email})
+
+        # If user doesn't exist
+        if not user:
+            return jsonify({'error': 'Account not found. Please register.'}), 404
+
+        # If password doesn't match
+        if user.get('password') != password:
+            return jsonify({'error': 'Incorrect password.'}), 401
+
+        # Success!
+        return jsonify({
+            'success': True,
+            'message': 'Login successful',
+            'userID': user.get('userID'),
+            'name': user.get('name')
+        }), 200
+
+    except Exception as e:
+        return jsonify({'error': f"Database error: {str(e)}"}), 500
 
 
 @app.route('/add_transaction', methods=['POST'])
@@ -56,9 +126,10 @@ def add_transaction():
         initiator_history = list(reversed(db_manager.get_user_history(initiator))) if initiator is not None else []
     except Exception:
         initiator_history = []
+        
     try:
-        recip_raw = list(db_manager.transactions.find({'recipient': recipient}).sort('transactionID', -1)) if recipient is not None else []
-        recipient_history = list(reversed(recip_raw))
+        # Use the new cleaner method
+        recipient_history = list(reversed(db_manager.get_recipient_history(recipient))) if recipient is not None else []
     except Exception:
         recipient_history = []
 
@@ -84,7 +155,6 @@ def add_transaction():
                     'isFraud': int(label),
                     'probability': probability,
                     'saved': bool(saved)}), 200
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

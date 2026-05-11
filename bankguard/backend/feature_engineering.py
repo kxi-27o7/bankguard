@@ -19,6 +19,7 @@ def _safe_div(a: float, b: float, default: float = 0.0) -> float:
         if b == 0 or b is None or math.isfinite(a) is False or math.isfinite(b) is False:
             return default
         return float(a) / float(b)
+    
     except Exception:
         return default
 
