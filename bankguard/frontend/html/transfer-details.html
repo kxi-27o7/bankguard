@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transfer Details - BankGuard</title>
+  <link rel="stylesheet" href="css/transfer-details.css">
+</head>
+<body>
+  <!-- Top Navbar -->
+  <header class="topbar">
+    <div class="brand-name">BankGuard</div>
+
+    <div class="topbar-icons">
+      <button class="icon-button" type="button" aria-label="Notification">♧</button>
+      <button class="icon-button" type="button" aria-label="Help">?</button>
+
+      <a href="login.html" class="profile-avatar" aria-label="Profile">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Profile">
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="transfer-page">
+    <section class="page-heading">
+      <h1>Secure Fund Transfer</h1>
+      <p>Your transaction is protected by our advanced AI fraud detection system.</p>
+    </section>
+
+    <section class="content-grid">
+      <!-- Transfer Form Card -->
+      <div class="transfer-card">
+        <form action="result.html" method="GET">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="recipient_id">RECIPIENT ID</label>
+
+              <div class="input-box">
+                <span class="input-icon">♙</span>
+                <input
+                  type="text"
+                  id="recipient_id"
+                  name="recipient_id"
+                  placeholder="e.g. BG-99281"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="transfer_nominal">TRANSFER NOMINAL</label>
+
+              <div class="input-box">
+                <span class="currency-label">IDR</span>
+                <input
+                  type="number"
+                  id="transfer_nominal"
+                  name="transfer_nominal"
+                  placeholder=""
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="transaction_time">TRANSACTION TIME</label>
+
+              <div class="input-box">
+                <span class="input-icon">◷</span>
+                <input
+                  type="datetime-local"
+                  id="transaction_time"
+                  name="transaction_time"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="average_weekly_transaction">AVERAGE WEEKLY TRANSACTION</label>
+
+              <div class="input-box">
+                <span class="input-icon">⌁</span>
+                <input
+                  type="number"
+                  id="average_weekly_transaction"
+                  name="average_weekly_transaction"
+                  placeholder="Previous activity level"
+                  required
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="info-alert">
+            <span></span>
+            <p>AI validation will occur instantly upon submission to ensure safety.</p>
+          </div>
+
+          <button type="submit" class="submit-button">
+            Validate &amp; Proceed Transfer
+            <span>→</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Fraud Analysis Card -->
+      <aside class="analysis-card">
+        <div class="analysis-top-line"></div>
+
+        <div class="analysis-header">
+          <div class="analysis-icon">⌘</div>
+          <h2>Fraud Analysis Engine</h2>
+        </div>
+
+        <p class="analysis-description">
+          BankGuard's proprietary AI monitors over 200 data points in real-time.
+          By comparing this input against your historical behavior and known threat patterns,
+          we proactively stop unauthorized access.
+        </p>
+
+        <div class="analysis-list">
+          <div class="analysis-item">
+            <div class="item-icon"></div>
+            <div>
+              <h3>Pattern Matching</h3>
+              <p>We cross-reference the transfer nominal with your weekly average to detect anomalies.</p>
+            </div>
+          </div>
+
+          <div class="analysis-item">
+            <div class="item-icon"></div>
+            <div>
+              <h3>Geospatial Awareness</h3>
+              <p>Recipient IDs are verified against global blacklist and risk databases.</p>
+            </div>
+          </div>
+
+          <div class="analysis-item">
+            <div class="item-icon">⚡</div>
+            <div>
+              <h3>Zero-Latency Protection</h3>
+              <p>Analysis completes in under 200ms without interrupting your banking flow.</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <h3>BankGuard</h3>
+      <p>© 2024 BankGuard Systems. All rights reserved. Secure Vigilance Monitoring.</p>
+    </div>
+
+    <nav class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Security Disclosure</a>
+      <a href="#">Contact Support</a>
+    </nav>
+  </footer>
+</body>
+</html>
