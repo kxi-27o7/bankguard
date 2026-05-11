@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transfer Details - BankGuard</title>
-  <link rel="stylesheet" href="css/transfer-details.css">
+  <title>Transaction Input - BankGuard</title>
+  <link rel="stylesheet" href="../css/transfer-details.css">
 </head>
+
 <body>
   <!-- Top Navbar -->
   <header class="topbar">
@@ -24,82 +25,153 @@
   <!-- Main Content -->
   <main class="transfer-page">
     <section class="page-heading">
-      <h1>Secure Fund Transfer</h1>
-      <p>Your transaction is protected by our advanced AI fraud detection system.</p>
+      <h1>Transaction Fraud Detection</h1>
+      <p>Enter transaction details so BankGuard can analyze whether the transaction is safe or suspicious.</p>
     </section>
 
     <section class="content-grid">
-      <!-- Transfer Form Card -->
+      <!-- Transaction Input Form Card -->
       <div class="transfer-card">
         <form action="result.html" method="GET">
           <div class="form-grid">
-            <div class="form-group">
-              <label for="recipient_id">RECIPIENT ID</label>
 
-              <div class="input-box">
-                <span class="input-icon">♙</span>
-                <input
-                  type="text"
-                  id="recipient_id"
-                  name="recipient_id"
-                  placeholder="e.g. BG-99281"
-                  required
-                >
+            <div class="form-group">
+              <label for="transactionType">TRANSACTION TYPE</label>
+              <div class="input-box select-box">
+                <span class="input-icon">⇄</span>
+                <select id="transactionType" name="transactionType" required>
+                  <option value="" selected disabled>Select transaction type</option>
+                  <option value="CASH_IN">CASH_IN</option>
+                  <option value="CASH_OUT">CASH_OUT</option>
+                  <option value="DEBIT">DEBIT</option>
+                  <option value="PAYMENT">PAYMENT</option>
+                  <option value="TRANSFER">TRANSFER</option>
+                </select>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="transfer_nominal">TRANSFER NOMINAL</label>
-
+              <label for="amount">AMOUNT</label>
               <div class="input-box">
                 <span class="currency-label">IDR</span>
                 <input
                   type="number"
-                  id="transfer_nominal"
-                  name="transfer_nominal"
-                  placeholder=""
+                  id="amount"
+                  name="amount"
+                  placeholder="e.g. 250000"
+                  min="0"
+                  step="0.01"
                   required
                 >
               </div>
             </div>
 
             <div class="form-group">
-              <label for="transaction_time">TRANSACTION TIME</label>
-
+              <label for="initiator">INITIATOR</label>
               <div class="input-box">
-                <span class="input-icon">◷</span>
+                <span class="input-icon">↗</span>
                 <input
-                  type="datetime-local"
-                  id="transaction_time"
-                  name="transaction_time"
+                  type="text"
+                  id="initiator"
+                  name="initiator"
+                  placeholder="e.g. C123456789"
                   required
                 >
               </div>
+              <small class="field-hint">Account or customer ID of the transaction sender.</small>
             </div>
 
             <div class="form-group">
-              <label for="average_weekly_transaction">AVERAGE WEEKLY TRANSACTION</label>
-
+              <label for="recipient">RECIPIENT</label>
               <div class="input-box">
-                <span class="input-icon">⌁</span>
+                <span class="input-icon">↘</span>
+                <input
+                  type="text"
+                  id="recipient"
+                  name="recipient"
+                  placeholder="e.g. M987654321"
+                  required
+                >
+              </div>
+              <small class="field-hint">Account or customer ID of the transaction receiver.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="oldBalInitiator">OLD BALANCE INITIATOR</label>
+              <div class="input-box">
+                <span class="currency-label">IDR</span>
                 <input
                   type="number"
-                  id="average_weekly_transaction"
-                  name="average_weekly_transaction"
-                  placeholder="Previous activity level"
+                  id="oldBalInitiator"
+                  name="oldBalInitiator"
+                  placeholder="Balance before transaction"
+                  min="0"
+                  step="0.01"
                   required
                 >
               </div>
             </div>
+
+            <div class="form-group">
+              <label for="newBalInitiator">NEW BALANCE INITIATOR</label>
+              <div class="input-box">
+                <span class="currency-label">IDR</span>
+                <input
+                  type="number"
+                  id="newBalInitiator"
+                  name="newBalInitiator"
+                  placeholder="Balance after transaction"
+                  min="0"
+                  step="0.01"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="oldBalRecipient">OLD BALANCE RECIPIENT</label>
+              <div class="input-box">
+                <span class="currency-label">IDR</span>
+                <input
+                  type="number"
+                  id="oldBalRecipient"
+                  name="oldBalRecipient"
+                  placeholder="Balance before transaction"
+                  min="0"
+                  step="0.01"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="newBalRecipient">NEW BALANCE RECIPIENT</label>
+              <div class="input-box">
+                <span class="currency-label">IDR</span>
+                <input
+                  type="number"
+                  id="newBalRecipient"
+                  name="newBalRecipient"
+                  placeholder="Balance after transaction"
+                  min="0"
+                  step="0.01"
+                  required
+                >
+              </div>
+            </div>
+
           </div>
 
           <div class="info-alert">
-            <span></span>
-            <p>AI validation will occur instantly upon submission to ensure safety.</p>
+            <span>ⓘ</span>
+            <p>
+              This form uses the same field names needed by the machine learning model,
+              so the backend can directly process the submitted transaction data.
+            </p>
           </div>
 
           <button type="submit" class="submit-button">
-            Validate &amp; Proceed Transfer
+            Validate Transaction
             <span>→</span>
           </button>
         </form>
@@ -115,33 +187,32 @@
         </div>
 
         <p class="analysis-description">
-          BankGuard's proprietary AI monitors over 200 data points in real-time.
-          By comparing this input against your historical behavior and known threat patterns,
-          we proactively stop unauthorized access.
+          BankGuard analyzes transaction type, amount, sender balance changes, and recipient balance changes
+          to detect abnormal transaction patterns.
         </p>
 
         <div class="analysis-list">
           <div class="analysis-item">
-            <div class="item-icon"></div>
+            <div class="item-icon">▣</div>
             <div>
-              <h3>Pattern Matching</h3>
-              <p>We cross-reference the transfer nominal with your weekly average to detect anomalies.</p>
+              <h3>Transaction Pattern</h3>
+              <p>The transaction type and amount are checked to identify risky financial behavior.</p>
             </div>
           </div>
 
           <div class="analysis-item">
-            <div class="item-icon"></div>
+            <div class="item-icon">◈</div>
             <div>
-              <h3>Geospatial Awareness</h3>
-              <p>Recipient IDs are verified against global blacklist and risk databases.</p>
+              <h3>Initiator Balance Check</h3>
+              <p>The sender's old and new balances are compared to verify whether the balance movement is logical.</p>
             </div>
           </div>
 
           <div class="analysis-item">
             <div class="item-icon">⚡</div>
             <div>
-              <h3>Zero-Latency Protection</h3>
-              <p>Analysis completes in under 200ms without interrupting your banking flow.</p>
+              <h3>Recipient Balance Check</h3>
+              <p>The receiver's old and new balances are reviewed to detect suspicious or inconsistent changes.</p>
             </div>
           </div>
         </div>
