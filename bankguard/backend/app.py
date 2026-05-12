@@ -72,7 +72,7 @@ def add_transaction():
         # return informative error; alternatively, you can still save record with prediction=None
         return jsonify({'error': 'model not loaded on server'}), 500
 
-    label, probability = predict(MODEL, features)
+    label, probability = predict(MODEL, features, threshold=0.16)
 
     # Save raw + features + prediction
     try:
