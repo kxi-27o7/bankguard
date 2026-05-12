@@ -19,6 +19,7 @@ def _safe_div(a: float, b: float, default: float = 0.0) -> float:
         if b == 0 or b is None or math.isfinite(a) is False or math.isfinite(b) is False:
             return default
         return float(a) / float(b)
+    
     except Exception:
         return default
 
@@ -45,13 +46,17 @@ def make_features(tx_raw: Dict[str, Any], history: Optional[Any] = None) -> Dict
 
     Returns a dict containing all features listed in your model spec.
     """
+    
+    # Assuming training data was in USD, 1 USD = ~15,000 IDR
+    SCALE_FACTOR = 5.0
+
     # Extract raw fields with safe defaults
     ttype = tx_raw.get('transactionType', '')
-    amount = float(tx_raw.get('amount', 0.0) or 0.0)
-    old_i = float(tx_raw.get('oldBalInitiator', 0.0) or 0.0)
-    new_i = float(tx_raw.get('newBalInitiator', 0.0) or 0.0)
-    old_r = float(tx_raw.get('oldBalRecipient', 0.0) or 0.0)
-    new_r = float(tx_raw.get('newBalRecipient', 0.0) or 0.0)
+    amount = float(tx_raw.get('amount', 0.0) or 0.0) / SCALE_FACTOR
+    old_i = float(tx_raw.get('oldBalInitiator', 0.0) or 0.0) / SCALE_FACTOR
+    new_i = float(tx_raw.get('newBalInitiator', 0.0) or 0.0) / SCALE_FACTOR
+    old_r = float(tx_raw.get('oldBalRecipient', 0.0) or 0.0) / SCALE_FACTOR
+    new_r = float(tx_raw.get('newBalRecipient', 0.0) or 0.0) / SCALE_FACTOR
 
     features: Dict[str, Any] = {}
 

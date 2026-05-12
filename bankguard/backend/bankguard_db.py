@@ -39,56 +39,61 @@ class BankguardManager:
     def get_user_history(self, user_id):
         """Fetches the most recent transactions for a specific user ID."""
         return list(self.transactions.find({"initiator": user_id}).sort("transactionID", -1))
-
-    def process_transaction(self, tx_data, model=None):
-        """
-        Logic: Checks history -> Predicts Fraud -> Saves to DB
-        tx_data should contain: initiator, recipient, amount, transactionType
-        """
-        initiator_id = tx_data['initiator']
+    
+    def get_recipient_history(self, recipient_id):
+        """Fetches the most recent transactions for a specific recipient."""
+        return list(self.transactions.find({"recipient": recipient_id}).sort("transactionID", -1))
+    
+    
+    # This function is moved to app.py (might be deleted entirely from here)
+    # def process_transaction(self, tx_data, model=None):
+    #     """
+    #     Logic: Checks history -> Predicts Fraud -> Saves to DB
+    #     tx_data should contain: initiator, recipient, amount, transactionType
+    #     """
+    #     initiator_id = tx_data['initiator']
         
-        # 1. Check for previous transactions from the getter
-        history = self.get_user_history(initiator_id)
+    #     # 1. Check for previous transactions from the getter
+    #     history = self.get_user_history(initiator_id)
         
-        # 2. Assume not fraud if it's the first transaction
-        # NOTE: Might be changed accordingly
-        if not history:
-            is_fraud_prediction = False
-            old_balance = 1000.00 # Standard starting mockup balance (change if necessary)
+    #     # 2. Assume not fraud if it's the first transaction
+    #     if not history:
+    #         is_fraud_prediction = False
+    #         old_balance = 1000.00 # Standard starting mockup balance (change if necessary)
 
-        else:
-            # Get the most recent balance from the latest transaction
-            old_balance = history[0]['newBalInitiator']
+    #     else:
+    #         # Get the most recent balance from the latest transaction
+    #         old_balance = history[0]['newBalInitiator']
             
-            # 3. Machine Learning Prediction
-            if model:
-                # Prepare features for your Random Forest (Example format)
-                features = [[tx_data['amount'], old_balance, len(history)]]
-                is_fraud_prediction = bool(model.predict(features)[0])
+    #         # 3. Machine Learning Prediction
+    #         if model:
+    #             # Prepare features for your Random Forest (Example format)
+    #             features = [[tx_data['amount'], old_balance, len(history)]]
+    #             is_fraud_prediction = bool(model.predict(features)[0])
 
-            else:
-                is_fraud_prediction = False # Fallback if model isn't loaded
+    #         else:
+    #             is_fraud_prediction = False # Fallback if model isn't loaded
 
-        # 4. Final Document Construction
-        tx_id = self._get_next_id("transactionid")
-        # Build base transaction document
-        final_doc = {
-            "transactionID": tx_id,
-            "transactionType": tx_data.get('transactionType'),
-            "amount": float(tx_data.get('amount', 0.0)),
-            "initiator": initiator_id,
-            "oldBalInitiator": float(old_balance),
-            "newBalInitiator": float(old_balance - tx_data.get('amount', 0.0)),
-            "recipient": tx_data.get('recipient'),
-            "oldBalRecipient": float(tx_data.get('oldBalRecipient', 0.0)),
-            "newBalRecipient": float(tx_data.get('newBalRecipient', tx_data.get('amount', 0.0))),
-            "isFraud": bool(is_fraud_prediction),
-            "created_at": datetime.utcnow()
-        }
+    #     # 4. Final Document Construction
+    #     tx_id = self._get_next_id("transactionid")
+    #     # Build base transaction document
+    #     final_doc = {
+    #         "transactionID": tx_id,
+    #         "transactionType": tx_data.get('transactionType'),
+    #         "amount": float(tx_data.get('amount', 0.0)),
+    #         "initiator": initiator_id,
+    #         "oldBalInitiator": float(old_balance),
+    #         "newBalInitiator": float(old_balance - tx_data.get('amount', 0.0)),
+    #         "recipient": tx_data.get('recipient'),
+    #         "oldBalRecipient": float(tx_data.get('oldBalRecipient', 0.0)),
+    #         "newBalRecipient": float(tx_data.get('newBalRecipient', tx_data.get('amount', 0.0))),
+    #         "isFraud": bool(is_fraud_prediction),
+    #         "created_at": datetime.utcnow()
+    #     }
 
-        # Insert the transaction document into MongoDB
-        self.transactions.insert_one(final_doc)
-        return final_doc
+    #     # Insert the transaction document into MongoDB
+    #     self.transactions.insert_one(final_doc)
+    #     return final_doc
 
 
     def delete_transaction(self, transaction_id):
@@ -116,19 +121,21 @@ class BankguardManager:
         """
         tx_id = self._get_next_id("transactionid")
 
+        # Create the base record
         record = {
             "transactionID": tx_id,
-            "raw": tx_raw,
             "features": features or {},
+            "isFraud": int(prediction) if prediction is not None else 0, # Match feature_engineering expectation
             "prediction": int(prediction) if prediction is not None else None,
             "probability": float(probability) if probability is not None else None,
             "user_id": user_id,
             "saved_at": datetime.utcnow()
         }
+        
+        # Unpack ALL raw fields into the top level of the record
+        record.update(tx_raw)
 
-        # Store the full record in the `transactions` collection
         self.transactions.insert_one(record)
         return record
-
 
 

@@ -17,11 +17,23 @@ def load_model(path: str):
     return joblib.load(path)
 
 
-def _to_dataframe_row(features: Dict[str, Any]) -> pd.DataFrame:
-    """Convert a features dict into a single-row DataFrame for model input."""
-    # Model was trained with a consistent set of column names. Create a
-    # one-row DataFrame. Caller must ensure keys match training features.
-    return pd.DataFrame([features])
+def _to_dataframe_row(features: Dict[str, Any], model) -> pd.DataFrame:
+    """Convert a features dict into a single-row DataFrame, enforcing training column order."""
+    df = pd.DataFrame([features])
+    
+    # Check if the model has the original feature names saved
+    if hasattr(model, 'feature_names_in_'):
+        expected_columns = model.feature_names_in_
+        
+        # 1. Add any columns the model expects but are missing from our dictionary (fill with 0)
+        for col in expected_columns:
+            if col not in df.columns:
+                df[col] = 0.0
+                
+        # 2. Force the DataFrame to use the EXACT column order the model was trained on
+        df = df[expected_columns]
+        
+    return df
 
 
 def predict(model, features: Dict[str, Any], threshold: Optional[float] = None) -> Tuple[int, Optional[float]]:
