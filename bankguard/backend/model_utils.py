@@ -36,7 +36,7 @@ def _to_dataframe_row(features: Dict[str, Any], model) -> pd.DataFrame:
     return df
 
 
-def predict(model, features: Dict[str, Any]) -> Tuple[int, Optional[float]]:
+def predict(model, features: Dict[str, Any], threshold: Optional[float] = None) -> Tuple[int, Optional[float]]:
     """
     Return (prediction_label, probability_for_positive_or_None).
     """
