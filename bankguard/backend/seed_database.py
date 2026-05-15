@@ -25,8 +25,8 @@ def seed_data():
     print(f"Created Initiator (ID: {initiator_id}) and Recipient (ID: {recipient_id})")
 
     # 2. Simulate 30 "Safe" Transactions to fill the 6, 12, and 24 windows
-    # Starting balance: 25,000,000 IDR
-    current_balance = 25000000.00
+    # Starting balance: 50,000,000 IDR
+    current_balance = 50000000.00
     
     for i in range(30):
         # John spends between Rp 150,000 and Rp 750,000 normally
