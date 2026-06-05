@@ -1,4 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Profile dropdown
+    const profileBtn = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        profileDropdown.classList.toggle('open');
+    });
+
+    document.addEventListener('click', () => {
+        profileDropdown.classList.remove('open');
+    });
+
+    logoutBtn.addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = 'login.html';
+    });
     // Read the data saved by transfer-details.js
     const isFraud = parseInt(localStorage.getItem('bg_isFraud')); // 0 or 1
     const rawProb = parseFloat(localStorage.getItem('bg_probability'));

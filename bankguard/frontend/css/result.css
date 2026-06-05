@@ -34,12 +34,8 @@ body {
     gap: 22px;
 }
 
-.icon-button {
-    border: none;
-    background: transparent;
-    color: #111827;
-    font-size: 18px;
-    cursor: pointer;
+.profile-wrapper {
+    position: relative;
 }
 
 .profile-avatar {
@@ -48,7 +44,15 @@ body {
     border-radius: 50%;
     overflow: hidden;
     display: block;
-    border: 1px solid #d1d5db;
+    border: 2px solid #d1d5db;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.profile-avatar:hover {
+    border-color: #071a3d;
 }
 
 .profile-avatar img {
@@ -57,10 +61,116 @@ body {
     object-fit: cover;
 }
 
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 220px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.profile-dropdown.open {
+    display: block;
+}
+
+.dropdown-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+}
+
+.dropdown-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #d1d5db;
+    flex-shrink: 0;
+}
+
+.dropdown-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+}
+
+.dropdown-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111827;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-email {
+    font-size: 11px;
+    color: #6b7280;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background-color: #e5e7eb;
+}
+
+.dropdown-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f3f4f6;
+}
+
+.logout-item {
+    color: #dc2626;
+}
+
+.logout-item:hover {
+    background-color: #fff5f5;
+}
+
+.dropdown-item-icon {
+    font-size: 15px;
+}
+
 /* Main */
 .result-page {
     min-height: calc(100vh - 136px);
-    padding: 48px 98px 70px;
+    padding: 48px 30px 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.result-center {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
 }
 
 /* Status Banner */
@@ -199,21 +309,14 @@ body {
     font-weight: 600;
 }
 
-/* Fraud Layout */
-.fraud-grid {
-    display: grid;
-    grid-template-columns: minmax(560px, 690px) minmax(300px, 340px);
-    gap: 22px;
-    align-items: start;
+/* Section heading */
+.section-heading {
+    font-size: 20px;
+    font-weight: 800;
+    color: #071a3d;
+    margin-bottom: 16px;
 }
 
-.fraud-main {
-    width: 100%;
-}
-
-.fraud-metrics {
-    margin-bottom: 22px;
-}
 
 .fraud-theme .metric-card h3 {
     color: #ad2d2a;
@@ -404,79 +507,20 @@ body {
     font-size: 9px;
 }
 
-/* Safe Layout */
-.safe-grid {
+/* Trust Section */
+.trust-section {
+    width: 100%;
+}
+
+.trust-grid {
     display: grid;
-    grid-template-columns: minmax(520px, 740px) minmax(300px, 360px);
-    gap: 24px;
-    align-items: start;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
-.safe-main h2,
-.trust-content h2 {
-    font-size: 20px;
-    font-weight: 800;
-    color: #071a3d;
-    margin-bottom: 26px;
-}
-
-.safe-main .metrics-grid {
-    margin-bottom: 24px;
-}
-
-.behavior-card {
-    background-color: #ffffff;
-    border-radius: 6px;
-    padding: 24px 22px 18px;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
-}
-
-.behavior-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 28px;
-}
-
-.behavior-header h3 {
-    font-size: 15px;
-    color: #071a3d;
-    font-weight: 800;
-}
-
-.behavior-header span {
-    font-size: 14px;
-    color: #6b7280;
-}
-
-.behavior-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 50px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.behavior-row:last-child {
-    border-bottom: none;
-}
-
-.behavior-row p {
-    font-size: 13px;
-    color: #4b5563;
-}
-
-.behavior-row strong {
-    font-size: 13px;
-    color: #071a3d;
-    font-weight: 800;
-}
-
-/* Trust Safe */
 .trust-card {
     border-radius: 7px;
     padding: 22px;
-    margin-bottom: 24px;
 }
 
 .dark-card {
@@ -611,20 +655,13 @@ body {
 }
 
 /* Responsive */
-@media (max-width: 1050px) {
-    .result-page {
-        padding: 34px 34px 58px;
-    }
-
-    .fraud-grid,
-    .safe-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 @media (max-width: 760px) {
     .result-page {
         padding: 28px 18px 48px;
+    }
+
+    .trust-grid {
+        grid-template-columns: 1fr;
     }
 
     .status-banner {
