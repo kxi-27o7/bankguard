@@ -456,13 +456,13 @@ body {
 
 /* Footer */
 .footer {
-  min-height: 84px;
+  height: 84px;
   background-color: #071a3d;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 22px;
+  padding: 0 26px;
 }
 
 .footer-brand h3 {
@@ -473,8 +473,8 @@ body {
 
 .footer-brand p {
   font-size: 10px;
-  color: #c7d2e8;
-  letter-spacing: 0.2px;
+  color: #b7c4dc;
+  letter-spacing: 0.3px;
 }
 
 .footer-links {
