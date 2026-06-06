@@ -1,3 +1,4 @@
 cc_to_mb/
 mb_modelTraining/
 bankguard/ml/model/model.pkl
+bankguard\bankguard\backend\.env

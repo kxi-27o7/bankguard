@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Profile dropdown
+    // Profile dropdown logic
     const profileBtn = document.getElementById('profileBtn');
     const profileDropdown = document.getElementById('profileDropdown');
     const logoutBtn = document.getElementById('logoutBtn');
@@ -17,43 +17,38 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.clear();
         window.location.href = 'login.html';
     });
+
     // Read the data saved by transfer-details.js
-    const isFraud = parseInt(localStorage.getItem('bg_isFraud')); // 0 or 1
+    const isFraud = parseInt(localStorage.getItem('bg_isFraud')); 
     const rawProb = parseFloat(localStorage.getItem('bg_probability'));
     const txId = localStorage.getItem('bg_txID');
 
-    // Format probability to a percentage (e.g., 0.88 -> 88)
     const probPercent = Math.round(rawProb * 100);
     const safePercent = 100 - probPercent;
-
-    // Update Transaction IDs on the page
-    document.querySelectorAll('.displayTxId').forEach(el => el.innerText = `TXN-${txId}`);
-
-    // Update Probabilities on the page
-    document.querySelectorAll('.displayProb').forEach(el => el.innerText = probPercent);
-    document.querySelectorAll('.displayRisk').forEach(el => el.innerText = probPercent);
-    document.querySelectorAll('.displaySafe').forEach(el => el.innerText = safePercent);
 
     // Grab our UI elements
     const body = document.getElementById('dynamicBody');
     const safeView = document.getElementById('safeView');
     const fraudView = document.getElementById('fraudView');
 
-    // Update Transaction IDs on the page
+    // Update Transaction IDs
     document.querySelectorAll('.displayTxId').forEach(el => el.innerText = `TXN-${txId}`);
     
-    // Update Probabilities on the page
+    // Update Risk and Safe Specific Metrics
+    document.querySelectorAll('.displayRisk').forEach(el => el.innerText = probPercent);
+    document.querySelectorAll('.displaySafe').forEach(el => el.innerText = safePercent);
+
+    // Dynamic Probability Display based on outcome
     document.querySelectorAll('.displayProb').forEach(el => {
-        // If safe, we want "confidence in safety" (100 - fraud prob). If fraud, we want the fraud prob.
-        el.innerText = isFraud === 1 ? probPercent : (100 - probPercent); 
+        el.innerText = isFraud === 1 ? probPercent : safePercent; 
     });
 
     // Switch the UI based on the AI Prediction
     if (isFraud === 1) {
-        body.className = "fraud-theme"; // Applies your red CSS styles
+        body.className = "fraud-theme"; 
         fraudView.style.display = "block";
     } else {
-        body.className = "safe-theme"; // Applies your green/blue CSS styles
+        body.className = "safe-theme"; 
         safeView.style.display = "block";
     }
 });

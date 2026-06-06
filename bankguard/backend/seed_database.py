@@ -18,11 +18,10 @@ def seed_data():
     """Generates realistic user history scaled for IDR (Indonesian Rupiah)."""
     print("Seeding new data...")
     
-    # 1. Create two users
+    # 1. Create a single user (System now focuses solely on Initiator/Person A)
     initiator_id = db_manager.add_user("John Doe", "john@example.com", "password123")
-    recipient_id = db_manager.add_user("Jane Doe", "jane@example.com", "password123")
     
-    print(f"Created Initiator (ID: {initiator_id}) and Recipient (ID: {recipient_id})")
+    print(f"Created Initiator (ID: {initiator_id})")
 
     # 2. Simulate 30 "Safe" Transactions to fill the 6, 12, and 24 windows
     # Starting balance: 50,000,000 IDR
@@ -33,15 +32,13 @@ def seed_data():
         amount = round(random.uniform(150000.0, 750000.0), 2)
         new_balance = current_balance - amount
         
+        # Updated payload to match the new 5-field structure
         safe_tx = {
+            "initiator": initiator_id,
             "transactionType": "PAYMENT",
             "amount": amount,
-            "initiator": initiator_id,
-            "recipient": recipient_id,
-            "oldBalInitiator": current_balance,
-            "newBalInitiator": new_balance,
-            "oldBalRecipient": 0.0,
-            "newBalRecipient": amount
+            "oldBalance": current_balance,
+            "newBalance": new_balance
         }
         
         # Save directly to DB (bypassing the ML model so it saves instantly)
