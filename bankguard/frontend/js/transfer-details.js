@@ -29,12 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const payload = {
             transactionType: document.getElementById('transactionType').value,
             amount: parseFloat(document.getElementById('amount').value),
-            initiator: parseInt(document.getElementById('initiator').value), 
-            recipient: parseInt(document.getElementById('recipient').value),
-            oldBalInitiator: parseFloat(document.getElementById('oldBalInitiator').value),
-            newBalInitiator: parseFloat(document.getElementById('newBalInitiator').value),
-            oldBalRecipient: parseFloat(document.getElementById('oldBalRecipient').value),
-            newBalRecipient: parseFloat(document.getElementById('newBalRecipient').value)
+            oldBalance: parseFloat(document.getElementById('oldBalance').value),
+            newBalance: parseFloat(document.getElementById('newBalance').value)
         };
 
         statusDiv.style.color = "blue";
