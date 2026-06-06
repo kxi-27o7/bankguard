@@ -21,7 +21,7 @@ body {
 }
 
 .register-container {
-    width: 960px;
+    width: 1060px;
     min-height: 505px;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -42,6 +42,32 @@ body {
 
 .left-content {
     width: 100%;
+}
+
+.brand-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.brand-title .shield-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-title .shield-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.brand-title span {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
 }
 
 .left-content h1 {
@@ -162,6 +188,7 @@ body {
     width: 16px;
     height: 16px;
     flex-shrink: 0;
+    margin-right: 10px;
 }
 
 .input-box > svg path {
@@ -230,6 +257,20 @@ body {
     text-decoration: underline;
 }
 
+/* Transaction row */
+.transaction-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.currency-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: #111827;
+    margin-right: 6px;
+    min-width: 24px;
+}
+
 /* Button */
 .register-button {
     width: 100%;
@@ -280,7 +321,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 18px;
+    padding: 0 26px;
 }
 
 .footer-brand h3 {
@@ -292,13 +333,13 @@ body {
 .footer-brand p {
     font-size: 10px;
     color: #b7c4dc;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.3px;
 }
 
 .footer-links {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: 24px;
 }
 
 .footer-links a {
