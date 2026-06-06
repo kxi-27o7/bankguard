@@ -92,25 +92,10 @@ def make_features(tx_raw: Dict[str, Any], history: Optional[Any] = None) -> Dict
     # INIT stats for windows 6,12,24
     # - INIT_AVG_AMOUNT_TX_{w}: rolling mean over last `w` transactions (if any)
     # - INIT_AMOUNT_DEV_TX_{w}: deviation of current `amount` from that rolling mean
-    # - INIT_TX_COUNT_STEP_{w}: prefer step-based count when `step` is available in history
     for w in (6, 12, 24):
         avg, _std, cnt = _window_stats(init_amounts, w)
         features[f'INIT_AVG_AMOUNT_TX_{w}'] = avg
         # in ipynb this is computed as amount - rolling_mean (per-row deviation)
         features[f'INIT_AMOUNT_DEV_TX_{w}'] = float(amount - avg)
-
-        # try to compute step-based counts if history items include `step` and tx_raw has `step`
-        tx_count_step = cnt
-        try:
-            current_step = int(tx_raw.get('step'))
-            # collect steps from history if present
-            steps = [int(t.get('step')) for t in initiator_hist if t.get('step') is not None]
-            if steps:
-                tx_count_step = sum(1 for s in steps if (s >= current_step - w) and (s <= current_step))
-        except Exception:
-            # fallback to count of last `w` transactions
-            tx_count_step = cnt
-
-        features[f'INIT_TX_COUNT_STEP_{w}'] = int(tx_count_step)
 
     return features
