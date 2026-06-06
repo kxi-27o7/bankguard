@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Profile dropdown
     const profileBtn = document.getElementById('profileBtn');
     const profileDropdown = document.getElementById('profileDropdown');
     const logoutBtn = document.getElementById('logoutBtn');
@@ -24,9 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     transactionForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Gather all form data
-        // Note: We use parseFloat/parseInt because the Python model requires numbers, not strings
+        // Clean, 5-field payload
         const payload = {
+            initiator: parseInt(localStorage.getItem('userID')) || 0, 
             transactionType: document.getElementById('transactionType').value,
             amount: parseFloat(document.getElementById('amount').value),
             oldBalance: parseFloat(document.getElementById('oldBalance').value),
@@ -37,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         statusDiv.innerText = "Analyzing transaction through BankGuard AI...";
 
         try {
-            // Send data to the app
             const response = await fetch('http://127.0.0.1:5000/add_transaction', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -47,12 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Save the ML model's prediction to localStorage
-                localStorage.setItem('bg_isFraud', data.isFraud); // 0 or 1
+                localStorage.setItem('bg_isFraud', data.isFraud); 
                 localStorage.setItem('bg_probability', data.probability || 0);
                 localStorage.setItem('bg_txID', data.transactionID || 'Unknown');
-
-                // Redirect to the combined results page
                 window.location.href = "result.html";
             } else {
                 statusDiv.style.color = "red";

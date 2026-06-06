@@ -11,14 +11,12 @@ from feature_engineering import make_features
 from model_utils import load_model, predict
 
 app = Flask(__name__)
-CORS(app)  # This allows the frontend to talk to the backend
+CORS(app) 
 
-# Initialize your manager
 load_dotenv()
-db_manager = BankguardManager(os.getenv("MONGO_URL")) # Change with passkey to database
+db_manager = BankguardManager(os.getenv("MONGO_URL")) 
 
-# Load model at startup if available
-BASE_DIR = Path(__file__).resolve().parent.parent # Finds the parent folder
+BASE_DIR = Path(__file__).resolve().parent.parent 
 MODEL_PATH = BASE_DIR / 'ml' / 'model' / 'model.pkl'
 if not MODEL_PATH.exists():
     MODEL_PATH = BASE_DIR / 'ml' / 'model' / 'model.joblib'
@@ -26,127 +24,73 @@ if not MODEL_PATH.exists():
 try:
     if os.path.exists(MODEL_PATH):
         MODEL = load_model(MODEL_PATH)
-    
 except Exception:
     MODEL = None
 
-
 @app.route('/register', methods=['POST'])
 def register_user():
-    """Endpoint to handle new user registrations"""
+    # ... (Keep existing register_user code) ...
     data = request.get_json()
-    
-    if not data:
-        return jsonify({'error': 'No JSON data provided'}), 400
-
-    name = data.get('fullName')
-    email = data.get('email')
-    password = data.get('password')
-
-    # Basic backend validation
-    if not name or not email or not password:
-        return jsonify({'error': 'Missing required fields'}), 400
-
+    if not data: return jsonify({'error': 'No JSON data provided'}), 400
+    name, email, password = data.get('fullName'), data.get('email'), data.get('password')
+    if not name or not email or not password: return jsonify({'error': 'Missing required fields'}), 400
     try:
-        # This will auto-increment the ID and save to MongoDB
         new_user_id = db_manager.add_user(name, email, password)
-        
-        return jsonify({
-            'success': True, 
-            'userID': new_user_id,
-            'message': 'Account created successfully'
-        }), 201
-        
+        return jsonify({'success': True, 'userID': new_user_id, 'message': 'Account created successfully'}), 201
     except Exception as e:
         return jsonify({'error': f"Database error: {str(e)}"}), 500
-
 
 @app.route('/login', methods=['POST'])
 def login_user():
-    """Endpoint to handle user logins"""
+    # ... (Keep existing login_user code) ...
     data = request.get_json()
-    
-    if not data:
-        return jsonify({'error': 'No JSON data provided'}), 400
-
-    email = data.get('email')
-    password = data.get('password')
-
-    if not email or not password:
-        return jsonify({'error': 'Missing email or password'}), 400
-
+    if not data: return jsonify({'error': 'No JSON data provided'}), 400
+    email, password = data.get('email'), data.get('password')
+    if not email or not password: return jsonify({'error': 'Missing email or password'}), 400
     try:
-        # Search the database for a user with this email
         user = db_manager.users.find_one({'email': email})
-
-        # If user doesn't exist
-        if not user:
-            return jsonify({'error': 'Account not found. Please register.'}), 404
-
-        # If password doesn't match
-        if user.get('password') != password:
-            return jsonify({'error': 'Incorrect password.'}), 401
-
-        # Success!
-        return jsonify({
-            'success': True,
-            'message': 'Login successful',
-            'userID': user.get('userID'),
-            'name': user.get('name')
-        }), 200
-
+        if not user: return jsonify({'error': 'Account not found. Please register.'}), 404
+        if user.get('password') != password: return jsonify({'error': 'Incorrect password.'}), 401
+        return jsonify({'success': True, 'message': 'Login successful', 'userID': user.get('userID'), 'name': user.get('name')}), 200
     except Exception as e:
         return jsonify({'error': f"Database error: {str(e)}"}), 500
 
-
 @app.route('/add_transaction', methods=['POST'])
 def add_transaction():
-    """Full pipeline:
-    1) accept raw tx JSON from frontend
-    2) fetch initiator/recipient history from DB (reverse to chronological)
-    3) compute features via `make_features`
-    4) run model.predict / predict_proba
-    5) save raw + features + prediction via `save_transaction_record`
-    """
     tx_raw = request.get_json() or {}
     if not tx_raw:
         return jsonify({'error': 'json body required'}), 400
 
-    # Validate minimal fields
-    required = ['initiator', 'recipient', 'amount', 'transactionType',
-                'oldBalInitiator', 'newBalInitiator', 'oldBalRecipient', 'newBalRecipient']
+    required = ['initiator', 'amount', 'transactionType', 'oldBalance', 'newBalance']
     missing = [f for f in required if f not in tx_raw]
     if missing:
         return jsonify({'error': 'missing fields', 'fields': missing}), 400
 
-    initiator = tx_raw.get('initiator')
-    recipient = tx_raw.get('recipient')
+    # FIXED: Force integer conversion for strict MongoDB matching
+    try:
+        initiator = int(tx_raw.get('initiator', 0))
+        tx_raw['initiator'] = initiator # Overwrite it in the raw dict so it saves as an int
+    except ValueError:
+        initiator = 0
 
-    # Fetch histories from DB. We reverse results to chronological (oldest->newest)
+    # 2. Fetch only initiator history
     try:
         initiator_history = list(reversed(db_manager.get_user_history(initiator))) if initiator is not None else []
     except Exception:
         initiator_history = []
-        
-    try:
-        # Use the new cleaner method
-        recipient_history = list(reversed(db_manager.get_recipient_history(recipient))) if recipient is not None else []
-    except Exception:
-        recipient_history = []
 
-    history = {'initiator': initiator_history, 'recipient': recipient_history}
+    history = {'initiator': initiator_history}
 
-    # Feature engineering
+    # 3. Feature engineering
     features = make_features(tx_raw, history=history)
 
-    # Prediction
+    # 4. Prediction
     if MODEL is None:
-        # return informative error; alternatively, you can still save record with prediction=None
         return jsonify({'error': 'model not loaded on server'}), 500
 
     label, probability = predict(MODEL, features, threshold=0.16)
 
-    # Save raw + features + prediction
+    # 5. Save raw + features + prediction
     try:
         saved = db_manager.save_transaction_record(tx_raw, features=features, prediction=label, probability=probability, user_id=initiator)
     except Exception:
