@@ -14,12 +14,25 @@
     <div class="brand-name">BankGuard</div>
 
     <div class="topbar-icons">
-      <button class="icon-button" type="button" aria-label="Notification">♧</button>
-      <button class="icon-button" type="button" aria-label="Help">?</button>
-
-      <a href="login.html" class="profile-avatar" aria-label="Profile">
-        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Profile">
-      </a>
+      <div class="profile-wrapper" id="profileWrapper">
+        <button class="profile-avatar" id="profileBtn" type="button" aria-label="Profile">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Profile">
+        </button>
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="dropdown-user">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Profile" class="dropdown-avatar">
+            <div class="dropdown-user-info">
+              <span class="dropdown-name">My Account</span>
+              <span class="dropdown-email">bankguard user</span>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item logout-item" id="logoutBtn" type="button">
+            <span class="dropdown-item-icon">⎋</span>
+            Log Out
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -30,9 +43,14 @@
       <p>Enter transaction details so BankGuard can analyze whether the transaction is safe or suspicious.</p>
     </section>
 
-    <section class="content-grid">
+    <div class="center-column">
+
       <!-- Transaction Input Form Card -->
       <div class="transfer-card">
+        <div class="card-title-row">
+          <span class="card-title-icon">⇄</span>
+          <h2 class="card-title">Enter Transaction Details</h2>
+        </div>
         <form id="transactionForm" action="result.html" method="GET">
           <div class="form-grid">
 
@@ -42,17 +60,17 @@
                 <span class="input-icon">⇄</span>
                 <select id="transactionType" name="transactionType" required>
                   <option value="" selected disabled>Select transaction type</option>
-                  <option value="CASH_IN">CASH_IN</option>
-                  <option value="CASH_OUT">CASH_OUT</option>
-                  <option value="DEBIT">DEBIT</option>
-                  <option value="PAYMENT">PAYMENT</option>
                   <option value="TRANSFER">TRANSFER</option>
+                  <option value="PAYMENT">PAYMENT</option>
+                  <option value="DEPOSIT">DEPOSIT</option>
+                  <option value="WITHDRAWAL">WITHDRAWAL</option>
+                  <option value="DEBIT">DEBIT</option>
                 </select>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="amount">AMOUNT</label>
+              <label for="amount">AMOUNT (IDR)</label>
               <div class="input-box">
                 <span class="currency-label">IDR</span>
                 <input
@@ -68,43 +86,13 @@
             </div>
 
             <div class="form-group">
-              <label for="initiator">INITIATOR</label>
-              <div class="input-box">
-                <span class="input-icon">↗</span>
-                <input
-                  type="text"
-                  id="initiator"
-                  name="initiator"
-                  placeholder="e.g. C123456789"
-                  required
-                >
-              </div>
-              <small class="field-hint">Account or customer ID of the transaction sender.</small>
-            </div>
-
-            <div class="form-group">
-              <label for="recipient">RECIPIENT</label>
-              <div class="input-box">
-                <span class="input-icon">↘</span>
-                <input
-                  type="text"
-                  id="recipient"
-                  name="recipient"
-                  placeholder="e.g. M987654321"
-                  required
-                >
-              </div>
-              <small class="field-hint">Account or customer ID of the transaction receiver.</small>
-            </div>
-
-            <div class="form-group">
-              <label for="oldBalInitiator">OLD BALANCE INITIATOR</label>
+              <label for="oldBalance">OLD BALANCE (IDR)</label>
               <div class="input-box">
                 <span class="currency-label">IDR</span>
                 <input
                   type="number"
-                  id="oldBalInitiator"
-                  name="oldBalInitiator"
+                  id="oldBalance"
+                  name="oldBalance"
                   placeholder="Balance before transaction"
                   min="0"
                   step="0.01"
@@ -114,13 +102,13 @@
             </div>
 
             <div class="form-group">
-              <label for="newBalInitiator">NEW BALANCE INITIATOR</label>
+              <label for="newBalance">NEW BALANCE (IDR)</label>
               <div class="input-box">
                 <span class="currency-label">IDR</span>
                 <input
                   type="number"
-                  id="newBalInitiator"
-                  name="newBalInitiator"
+                  id="newBalance"
+                  name="newBalance"
                   placeholder="Balance after transaction"
                   min="0"
                   step="0.01"
@@ -129,46 +117,6 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="oldBalRecipient">OLD BALANCE RECIPIENT</label>
-              <div class="input-box">
-                <span class="currency-label">IDR</span>
-                <input
-                  type="number"
-                  id="oldBalRecipient"
-                  name="oldBalRecipient"
-                  placeholder="Balance before transaction"
-                  min="0"
-                  step="0.01"
-                  required
-                >
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="newBalRecipient">NEW BALANCE RECIPIENT</label>
-              <div class="input-box">
-                <span class="currency-label">IDR</span>
-                <input
-                  type="number"
-                  id="newBalRecipient"
-                  name="newBalRecipient"
-                  placeholder="Balance after transaction"
-                  min="0"
-                  step="0.01"
-                  required
-                >
-              </div>
-            </div>
-
-          </div>
-
-          <div class="info-alert">
-            <span>ⓘ</span>
-            <p>
-              This form uses the same field names needed by the machine learning model,
-              so the backend can directly process the submitted transaction data.
-            </p>
           </div>
 
           <div id="formStatus" class="form-status"></div>
@@ -185,41 +133,42 @@
 
         <div class="analysis-header">
           <div class="analysis-icon">⌘</div>
-          <h2>Fraud Analysis Engine</h2>
+          <h2>How the Fraud Analysis Works</h2>
         </div>
 
         <p class="analysis-description">
-          BankGuard analyzes transaction type, amount, sender balance changes, and recipient balance changes
-          to detect abnormal transaction patterns.
+          BankGuard's engine runs your transaction through a trained ML model that identifies
+          abnormal patterns based on transaction type and amount.
         </p>
 
         <div class="analysis-list">
           <div class="analysis-item">
             <div class="item-icon">▣</div>
             <div>
-              <h3>Transaction Pattern</h3>
-              <p>The transaction type and amount are checked to identify risky financial behavior.</p>
+              <h3>Transaction Pattern Recognition</h3>
+              <p>The type and amount combination is cross-checked against historical fraud patterns to flag outliers.</p>
             </div>
           </div>
 
           <div class="analysis-item">
             <div class="item-icon">◈</div>
             <div>
-              <h3>Initiator Balance Check</h3>
-              <p>The sender's old and new balances are compared to verify whether the balance movement is logical.</p>
+              <h3>Risk Scoring</h3>
+              <p>Each transaction receives a fraud probability score — the higher the score, the more suspicious the activity.</p>
             </div>
           </div>
 
           <div class="analysis-item">
             <div class="item-icon">⚡</div>
             <div>
-              <h3>Recipient Balance Check</h3>
-              <p>The receiver's old and new balances are reviewed to detect suspicious or inconsistent changes.</p>
+              <h3>Instant Result</h3>
+              <p>Results are returned in real time so you can act immediately on any flagged transaction.</p>
             </div>
           </div>
         </div>
       </aside>
-    </section>
+
+    </div>
   </main>
 
   <!-- Footer -->

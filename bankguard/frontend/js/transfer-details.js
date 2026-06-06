@@ -1,14 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Profile dropdown
+    const profileBtn = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        profileDropdown.classList.toggle('open');
+    });
+
+    document.addEventListener('click', () => {
+        profileDropdown.classList.remove('open');
+    });
+
+    logoutBtn.addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = 'login.html';
+    });
+
     const transactionForm = document.getElementById('transactionForm');
     const statusDiv = document.getElementById('formStatus');
-
-    // Auto-fill the initiator ID if the user logged in previously
-    const loggedInUserId = localStorage.getItem('bankguard_userID');
-    if (loggedInUserId) {
-        document.getElementById('initiator').value = loggedInUserId;
-        // Optionally make it read-only so they can't change their own ID
-        // document.getElementById('initiator').setAttribute('readonly', true);
-    }
 
     transactionForm.addEventListener('submit', async (e) => {
         e.preventDefault();

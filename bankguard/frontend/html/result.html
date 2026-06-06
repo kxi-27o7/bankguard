@@ -10,34 +10,50 @@
   <header class="topbar">
     <div class="brand-name">BankGuard</div>
     <div class="topbar-icons">
-      <button class="icon-button" type="button" aria-label="Notification">♧</button>
-      <button class="icon-button" type="button" aria-label="Help">?</button>
-      <a href="login.html" class="profile-avatar" aria-label="Profile">
-        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Profile">
-      </a>
+      <div class="profile-wrapper" id="profileWrapper">
+        <button class="profile-avatar" id="profileBtn" type="button" aria-label="Profile">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Profile">
+        </button>
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="dropdown-user">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Profile" class="dropdown-avatar">
+            <div class="dropdown-user-info">
+              <span class="dropdown-name">My Account</span>
+              <span class="dropdown-email">bankguard user</span>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item logout-item" id="logoutBtn" type="button">
+            <span class="dropdown-item-icon">⎋</span>
+            Log Out
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
   <main class="result-page">
-    
-    <div id="safeView" style="display: none;">
-      <section class="status-banner">
-        <div class="status-left">
-          <div class="status-icon">✓</div>
-          <div>
-            <h1>No Fraud Detected</h1>
-            <p>The transaction cluster aligns with expected behavioral patterns.</p>
-          </div>
-        </div>
-        <div class="evaluation-id">
-          <p>EVALUATION ID</p>
-          <strong class="displayTxId">BG-0000</strong>
-        </div>
-      </section>
 
-      <section class="safe-grid">
-        <div class="safe-main">
-          <h2>Evaluation Metrics</h2>
+    <!-- Safe View -->
+    <div id="safeView" style="display: none;">
+      <div class="result-center">
+
+        <section class="status-banner">
+          <div class="status-left">
+            <div class="status-icon">✓</div>
+            <div>
+              <h1>No Fraud Detected</h1>
+              <p>The transaction cluster aligns with expected behavioral patterns.</p>
+            </div>
+          </div>
+          <div class="evaluation-id">
+            <p>EVALUATION ID</p>
+            <strong class="displayTxId">BG-0000</strong>
+          </div>
+        </section>
+
+        <section class="safe-metrics-section">
+          <h2 class="section-heading">Evaluation Metrics</h2>
           <div class="metrics-grid">
             <div class="metric-card">
               <p>RISK SCORE</p>
@@ -55,116 +71,96 @@
               <small>Standard behavior</small>
             </div>
           </div>
+        </section>
 
-          <div class="behavior-card">
-            <div class="behavior-header">
-              <h3>Behavioral Analysis</h3>
-              <span>▣</span>
+        <section class="trust-section">
+          <h2 class="section-heading">Trust Indicators</h2>
+          <div class="trust-grid">
+            <div class="trust-card dark-card">
+              <p class="trust-label">SECURE VIGILANCE</p>
+              <h3>Encryption Active</h3>
+              <p>Every data point in this evaluation has been cross-referenced with BankGuard's proprietary vault using 256-bit end-to-end encryption.</p>
             </div>
-            <div class="behavior-row">
-              <p>Geographic Consistency</p>
-              <strong>Optimal</strong>
-            </div>
-            <div class="behavior-row">
-              <p>Device Fingerprinting</p>
-              <strong>Verified</strong>
-            </div>
-            <div class="behavior-row">
-              <p>Velocity Threshold</p>
-              <strong>Within Limits</strong>
-            </div>
-            <div class="behavior-row">
-              <p>Anomaly Deviation</p>
-              <strong>0.02%</strong>
-            </div>
-          </div>
-        </div>
-
-        <aside class="trust-content">
-          <h2>Trust Indicators</h2>
-          <div class="trust-card dark-card">
-            <p class="trust-label">SECURE VIGILANCE</p>
-            <h3>Encryption Active</h3>
-            <p>Every data point in this evaluation has been cross-referenced with BankGuard's proprietary vault using 256-bit end-to-end encryption.</p>
-          </div>
-          <div class="trust-card light-card">
-            <div class="trust-item">
-              <span>↺</span>
-              <div>
-                <h4>History Log</h4>
-                <p>Profile maintains clean transaction history.</p>
+            <div class="trust-card light-card">
+              <div class="trust-item">
+                <span>↺</span>
+                <div>
+                  <h4>History Log</h4>
+                  <p>Profile maintains clean transaction history.</p>
+                </div>
               </div>
-            </div>
-            <div class="trust-item">
-              <span>❖</span>
-              <div>
-                <h4>Institution Verification</h4>
-                <p>Confirmed with 3 partner nodes.</p>
+              <div class="trust-item">
+                <span>❖</span>
+                <div>
+                  <h4>Institution Verification</h4>
+                  <p>Confirmed with 3 partner nodes.</p>
+                </div>
               </div>
             </div>
           </div>
-          <a href="transfer-details.html" class="back-button">
-            <span>←</span> Back to Dashboard
-          </a>
-        </aside>
-      </section>
+        </section>
+
+        <a href="transfer-details.html" class="back-button">
+          <span>←</span> Back to Dashboard
+        </a>
+
+      </div>
     </div>
 
-
+    <!-- Fraud View -->
     <div id="fraudView" style="display: none;">
-      <section class="status-banner">
-        <div class="status-left">
-          <div class="status-icon">!</div>
-          <div>
-            <h1>Fraudulent Activity Detected</h1>
-            <p>Our real-time monitoring system has flagged high-risk behavior on this transaction.</p>
+      <div class="result-center">
+
+        <section class="status-banner">
+          <div class="status-left">
+            <div class="status-icon">!</div>
+            <div>
+              <h1>Fraudulent Activity Detected</h1>
+              <p>Our real-time monitoring system has flagged high-risk behavior on this transaction.</p>
+            </div>
+          </div>
+          <div class="evaluation-id">
+            <p>EVALUATION ID</p>
+            <strong class="displayTxId">BG-0000</strong>
+          </div>
+        </section>
+
+        <div class="metrics-grid fraud-metrics">
+          <div class="metric-card">
+            <p>RISK SCORE</p>
+            <h3><span class="displayProb">88</span><span>/100</span></h3>
+            <div class="risk-line"></div>
+          </div>
+          <div class="metric-card">
+            <p>LEGITIMACY CONFIDENCE</p>
+            <h3><span class="displaySafe">12</span><span>%</span></h3>
+            <small class="danger-pill">Low Confidence</small>
+          </div>
+          <div class="metric-card">
+            <p>PATTERN MATCH</p>
+            <h3 class="pattern-danger">◈ Suspicious</h3>
+            <small>Machine Learning Flag</small>
           </div>
         </div>
-        <div class="evaluation-id">
-          <p>EVALUATION ID</p>
-          <strong class="displayTxId">BG-0000</strong>
+
+        <div class="red-flags-card">
+          <div class="red-flags-header">
+            <h2>System Red Flags</h2>
+            <span>CRITICAL ALERTS</span>
+          </div>
+          <div class="red-flag-row">
+            <div class="flag-icon">⊘</div>
+            <div>
+              <h3 id="dynamicFlagTitle">Random Forest Threshold Exceeded</h3>
+              <p>The combination of transaction amount, historical balance changes, and routing patterns triggered an anomaly alert.</p>
+            </div>
+          </div>
         </div>
-      </section>
 
-      <section class="fraud-grid">
-        <div class="fraud-main">
-          <div class="metrics-grid fraud-metrics">
-            <div class="metric-card">
-              <p>RISK SCORE</p>
-              <h3><span class="displayProb">88</span><span>/100</span></h3>
-              <div class="risk-line"></div>
-            </div>
-            <div class="metric-card">
-              <p>LEGITIMACY CONFIDENCE</p>
-              <h3><span class="displaySafe">12</span><span>%</span></h3>
-              <small class="danger-pill">Low Confidence</small>
-            </div>
-            <div class="metric-card">
-              <p>PATTERN MATCH</p>
-              <h3 class="pattern-danger">◈ Suspicious</h3>
-              <small>Machine Learning Flag</small>
-            </div>
-          </div>
-
-          <div class="red-flags-card">
-            <div class="red-flags-header">
-              <h2>System Red Flags</h2>
-              <span>CRITICAL ALERTS</span>
-            </div>
-            <div class="red-flag-row">
-              <div class="flag-icon">⊘</div>
-              <div>
-                <h3 id="dynamicFlagTitle">Random Forest Threshold Exceeded</h3>
-                <p>The combination of transaction amount, historical balance changes, and routing patterns triggered an anomaly alert.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="action-row">
-            <button type="button" class="danger-button">✹ Freeze Transaction</button>
-            <button type="button" class="outline-button">⚐ Report to Bank</button>
-            <button type="button" class="outline-button">▣ Review Detailed Logs</button>
-          </div>
+        <div class="action-row">
+          <button type="button" class="danger-button">✹ Freeze Transaction</button>
+          <button type="button" class="outline-button">⚐ Report to Bank</button>
+          <button type="button" class="outline-button">▣ Review Detailed Logs</button>
         </div>
 
         <aside class="immediate-card">
@@ -174,11 +170,13 @@
             <li>Change master PIN and login credentials via a secure device.</li>
             <li>Revoke all active OAuth sessions in settings.</li>
           </ul>
-          <a href="transfer-details.html" class="back-button" style="margin-top: 20px;">
-            <span>←</span> Back to Dashboard
-          </a>
         </aside>
-      </section>
+
+        <a href="transfer-details.html" class="back-button">
+          <span>←</span> Back to Dashboard
+        </a>
+
+      </div>
     </div>
 
   </main>
