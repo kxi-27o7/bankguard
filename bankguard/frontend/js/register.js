@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusDiv = document.getElementById('registerStatus');
 
     registerForm.addEventListener('submit', async (e) => {
-        // Stop the page from reloading/redirecting immediately
         e.preventDefault(); 
 
         // Grab the values from the input fields
@@ -11,11 +10,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById('registerEmail').value.trim();
         const password = document.getElementById('registerPassword').value;
         const confirmPassword = document.getElementById('password_confirmation').value;
+        
+        // NEW: Grab the min and max transaction values
+        const avgMin = parseFloat(document.getElementById('avgMinTransaction').value);
+        const avgMax = parseFloat(document.getElementById('avgMaxTransaction').value);
 
         // Validation Logic
-        if (!fullName || !email || !password || !confirmPassword) {
+        if (!fullName || !email || !password || !confirmPassword || isNaN(avgMin) || isNaN(avgMax)) {
             statusDiv.style.color = "red";
             statusDiv.innerText = "All fields are required.";
+            return;
+        }
+
+        if (avgMin >= avgMax) {
+            statusDiv.style.color = "red";
+            statusDiv.innerText = "Maximum transaction must be greater than minimum.";
             return;
         }
 
@@ -31,11 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Display a loading message
         statusDiv.style.color = "blue";
-        statusDiv.innerText = "Creating secure account...";
+        statusDiv.innerText = "Creating secure account & generating history...";
 
-        // Send the data to the app
         try {
             const response = await fetch('http://127.0.0.1:5000/register', {
                 method: 'POST',
@@ -45,18 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     fullName: fullName,
                     email: email,
-                    password: password // Note: at this moment, password is still plain text
+                    password: password,
+                    avgMinTransaction: avgMin, // NEW: Added to payload
+                    avgMaxTransaction: avgMax  // NEW: Added to payload
                 })
             });
 
             const data = await response.json();
 
-            // Handle the backend response
             if (response.ok) {
                 statusDiv.style.color = "green";
-                statusDiv.innerText = `Success! Account has been created. Your User ID is: ${data.userID}. Redirecting to login...`;
+                statusDiv.innerText = `Success! Account created and seeded. User ID: ${data.userID}. Redirecting...`;
                 
-                // Redirect to login page after 2 seconds
                 setTimeout(() => {
                     window.location.href = "login.html";
                 }, 2000);

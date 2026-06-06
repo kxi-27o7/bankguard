@@ -1,4 +1,4 @@
-from cv2 import threshold
+import random # NEW: Needed for seeding random amounts
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pathlib import Path
@@ -9,6 +9,10 @@ import os
 from bankguard_db import BankguardManager
 from feature_engineering import make_features
 from model_utils import load_model, predict
+
+# Getting rid of warnings
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
 
 app = Flask(__name__)
 CORS(app) 
@@ -27,16 +31,64 @@ try:
 except Exception:
     MODEL = None
 
+
+# --- NEW: Helper function to generate 30 safe transactions ---
+def seed_initial_transactions(user_id, min_amount, max_amount):
+    # Starting with a generic 50 Million IDR baseline (matching your z_console logic)
+    current_balance = 50000000.00 
+    
+    for _ in range(30):
+        # Generate a random amount within the user's defined safe bounds
+        amount = round(random.uniform(min_amount, max_amount), 2)
+        new_balance = current_balance - amount
+        
+        safe_tx = {
+            "initiator": user_id,
+            "transactionType": "PAYMENT",
+            "amount": amount,
+            "oldBalance": current_balance,
+            "newBalance": new_balance
+        }
+        
+        # Save directly to the DB as a safe transaction (Prediction 0)
+        db_manager.save_transaction_record(
+            tx_raw=safe_tx, 
+            features={}, 
+            prediction=0, 
+            probability=0.0
+        )
+
+        current_balance = new_balance
+
 @app.route('/register', methods=['POST'])
 def register_user():
-    # ... (Keep existing register_user code) ...
     data = request.get_json()
     if not data: return jsonify({'error': 'No JSON data provided'}), 400
-    name, email, password = data.get('fullName'), data.get('email'), data.get('password')
-    if not name or not email or not password: return jsonify({'error': 'Missing required fields'}), 400
+    
+    name = data.get('fullName')
+    email = data.get('email')
+    password = data.get('password')
+    
+    # NEW: Extract the min and max values, providing a fallback if missing
+    avg_min = float(data.get('avgMinTransaction', 150000.0))
+    avg_max = float(data.get('avgMaxTransaction', 750000.0))
+    
+    if not name or not email or not password: 
+        return jsonify({'error': 'Missing required fields'}), 400
+        
     try:
+        # 1. Create the user
         new_user_id = db_manager.add_user(name, email, password)
-        return jsonify({'success': True, 'userID': new_user_id, 'message': 'Account created successfully'}), 201
+        
+        # 2. Seed their safe historical data
+        seed_initial_transactions(new_user_id, avg_min, avg_max)
+        
+        return jsonify({
+            'success': True, 
+            'userID': new_user_id, 
+            'message': 'Account created and seeded successfully'
+        }), 201
+        
     except Exception as e:
         return jsonify({'error': f"Database error: {str(e)}"}), 500
 
@@ -88,7 +140,7 @@ def add_transaction():
     if MODEL is None:
         return jsonify({'error': 'model not loaded on server'}), 500
 
-    label, probability = predict(MODEL, features, threshold=0.16)
+    label, probability = predict(MODEL, features, threshold=0.5)
 
     # 5. Save raw + features + prediction
     try:
