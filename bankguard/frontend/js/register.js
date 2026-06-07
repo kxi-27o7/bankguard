@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statusDiv.innerText = "Creating secure account & generating history...";
 
         try {
-            const response = await fetch('https://nevhs-bankguard-api.hf.space/add_transaction', {
+            const response = await fetch('https://nevhs-bankguard-api.hf.space/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
