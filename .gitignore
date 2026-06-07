@@ -1,5 +1,15 @@
 cc_to_mb/
-mb_modelTraining/
+
+mb_modelTraining/dataset
+mb_modelTraining/try_01
+mb_modelTraining/try_02
+mb_modelTraining/try_03
+mb_modelTraining/try_04
+mb_modelTraining/try_05
+mb_modelTraining/try_06
+mb_modelTraining/try_07
+mb_modelTraining/try_08
+
 bankguard/ml/model/model.pkl
 bankguard\bankguard\backend\.env
 
