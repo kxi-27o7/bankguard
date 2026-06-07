@@ -18,9 +18,17 @@ app = Flask(__name__)
 CORS(app) 
 
 load_dotenv()
-db_manager = BankguardManager(os.getenv("MONGO_URL")) 
+db_manager = BankguardManager(os.getenv("MONGO_URL"))
 
-BASE_DIR = Path(__file__).resolve().parent.parent 
+@app.route('/', methods=['GET'])
+def health_check():
+    return jsonify({
+        "status": "online",
+        "message": "BankGuard API is running successfully!",
+        "version": "1.0"
+    }), 200
+
+BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / 'ml' / 'model' / 'model.pkl'
 if not MODEL_PATH.exists():
     MODEL_PATH = BASE_DIR / 'ml' / 'model' / 'model.joblib'
@@ -154,4 +162,5 @@ def add_transaction():
                     'saved': bool(saved)}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # host="0.0.0.0" is required for Docker/Hugging Face to route traffic correctly
+    app.run(host="0.0.0.0", port=7860)
