@@ -100,7 +100,39 @@
                 <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm your password" required>
               </div>
             </div>
-            
+            <div class="transaction-row">
+              <div class="form-group">
+                <label for="avgMinTransaction">AVERAGE MINIMUM TRANSACTION (IDR)</label>
+                <div class="input-box">
+                  <span class="input-icon currency-label">IDR</span>
+                  <input
+                    type="number"
+                    id="avgMinTransaction"
+                    name="avgMinTransaction"
+                    placeholder="e.g. 50000"
+                    min="0"
+                    step="0.01"
+                    required
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="avgMaxTransaction">AVERAGE MAXIMUM TRANSACTION (IDR)</label>
+                <div class="input-box">
+                  <span class="input-icon currency-label">IDR</span>
+                  <input
+                    type="number"
+                    id="avgMaxTransaction"
+                    name="avgMaxTransaction"
+                    placeholder="e.g. 5000000"
+                    min="0"
+                    step="0.01"
+                    required
+                  >
+                </div>
+              </div>
+            </div>
             <div id="registerStatus" class="form-status"></div>
             <button type="submit" class="register-button">
               Create Secure Account
