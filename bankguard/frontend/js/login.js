@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('userName', data.name);
 
                 setTimeout(() => {
-                    window.location.href = "transfer-details.html";
+                    window.location.href = "html/transfer-details.html";
                 }, 1500);
             } else {
                 statusDiv.style.color = "red";
