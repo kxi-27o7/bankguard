@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statusDiv.innerText = "Analyzing transaction through BankGuard AI...";
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/add_transaction', {
+            const response = await fetch('https://nevhs-bankguard-api.hf.space/add_transaction', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
