@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusDiv.innerText = `Success! Account created and seeded. User ID: ${data.userID}. Redirecting...`;
                 
                 setTimeout(() => {
-                    window.location.href = "login.html";
+                    window.location.href = "/html/index.html";
                 }, 2000);
             } else {
                 statusDiv.style.color = "red";

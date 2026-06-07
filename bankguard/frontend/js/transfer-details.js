@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logoutBtn.addEventListener('click', () => {
         localStorage.clear();
-        window.location.href = 'index.html';
+        window.location.href = '/html/index.html';
     });
 
     const transactionForm = document.getElementById('transactionForm');
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('bg_isFraud', data.isFraud); 
                 localStorage.setItem('bg_probability', data.probability || 0);
                 localStorage.setItem('bg_txID', data.transactionID || 'Unknown');
-                window.location.href = "result.html";
+                window.location.href = "/html/result.html";
             } else {
                 statusDiv.style.color = "red";
                 statusDiv.innerText = `Error: ${data.error}`;
