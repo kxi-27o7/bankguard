@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     transactionForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Clean, 5-field payload
         const payload = {
             initiator: parseInt(localStorage.getItem('userID')) || 0, 
             transactionType: document.getElementById('transactionType').value,

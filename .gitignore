@@ -11,6 +11,6 @@ mb_modelTraining/try_07
 mb_modelTraining/try_08
 
 bankguard/ml/model/model.pkl
-bankguard\bankguard\backend\.env
+bankguard/bankguard/backend/.env
 
-bankguard\bankguard\backend\z_console.py
+bankguard/bankguard/backend/z_console.py

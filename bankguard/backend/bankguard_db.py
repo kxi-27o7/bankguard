@@ -1,3 +1,6 @@
+"""
+Database Management module for BankGuard interactions via MongoDB.
+"""
 from pymongo import MongoClient, ReturnDocument
 from datetime import datetime
 from typing import Optional, Dict
@@ -11,6 +14,7 @@ class BankguardManager:
         self.counters = self.db.counters
 
     def _get_next_id(self, counter_name):
+        """Generates a sequential integer ID for relational tracking."""
         counter = self.counters.find_one_and_update(
             {"_id": counter_name},
             {"$inc": {"seq": 1}},
@@ -33,15 +37,13 @@ class BankguardManager:
     def get_user_history(self, user_id):
         return list(self.transactions.find({"initiator": user_id}).sort("transactionID", -1))
     
-    # get_recipient_history removed
-    
     def delete_transaction(self, transaction_id):
         return self.transactions.delete_one({"transactionID": transaction_id})
     
     def save_transaction_record(self, tx_raw: Dict, features: Optional[Dict] = None, prediction: Optional[int] = None, probability: Optional[float] = None, user_id: Optional[int] = None):
+        """Archives the complete state of a transaction, including ML metrics, for auditing."""
         tx_id = self._get_next_id("transactionid")
 
-        # Create the base record (Removed the redundant 'prediction' and 'user_id' keys)
         record = {
             "transactionID": tx_id,
             "features": features or {},
@@ -50,7 +52,6 @@ class BankguardManager:
             "saved_at": datetime.utcnow()
         }
         
-        # This unpacks ALL raw fields (including 'initiator', 'amount', etc.) into the record
         record.update(tx_raw)
 
         self.transactions.insert_one(record)
