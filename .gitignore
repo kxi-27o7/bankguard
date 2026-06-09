@@ -10,6 +10,9 @@ mb_modelTraining/try_06
 mb_modelTraining/try_07
 mb_modelTraining/try_08
 
+mb_modelTraining/train_xgboost.ipynb
+mb_modelTraining/valuate_models_xgb.ipynb
+
 bankguard/ml/model/model.pkl
 bankguard\bankguard\backend\.env
 
