@@ -28,7 +28,7 @@ def _window_stats(amounts: List[float], window: int):
 def make_features(tx_raw: Dict[str, Any], history: Optional[Any] = None) -> Dict[str, Any]:
     """Generates engineered ML features from the raw transaction payload and database history."""
     
-    # Normalization factor for IDR to base training data alignment
+    # Normalization factor for IDR to base training data alignment (Ugandan Shilling)
     SCALE_FACTOR = 5.0
 
     ttype = tx_raw.get('transactionType', '')
@@ -68,6 +68,9 @@ def make_features(tx_raw: Dict[str, Any], history: Optional[Any] = None) -> Dict
     init_amounts = [(float(t.get('amount', 0.0) or 0.0) / SCALE_FACTOR) for t in initiator_hist]
 
     # Feature: Rolling Window Analytics (6, 12, and 24 instances)
+    # INIT stats for windows 6,12,24
+    # - INIT_AVG_AMOUNT_TX_{w}: rolling mean over last `w` transactions (if any)
+    # - INIT_AMOUNT_DEV_TX_{w}: deviation of current `amount` from that rolling mean
     for w in (6, 12, 24):
         avg, _std, cnt = _window_stats(init_amounts, w)
         features[f'INIT_AVG_AMOUNT_TX_{w}'] = avg

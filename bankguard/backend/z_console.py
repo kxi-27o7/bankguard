@@ -279,7 +279,7 @@ def run_amount_stress_test(user_id):
     # not the model reacting to a drained bank account.
     static_old_balance = 50000000.00 
 
-    print("Scanning amounts from Rp 10,000 to Rp 1,000,000 (Step: Rp 10,000)...\n")
+    print("Scanning amounts from Rp 10,000 to Rp 10,000,000 (Step: Rp 10,000)...\n")
 
     # State tracking variables
     current_state = None
@@ -287,7 +287,7 @@ def run_amount_stress_test(user_id):
     results = []
 
     # 3. The Sweep Loop
-    for amount in range(10000, 1000000 + 1, 10000):
+    for amount in range(10000, 10000000 + 1, 10000):
         # Create payload
         tx_raw = {
             "initiator": user_id,
@@ -320,7 +320,7 @@ def run_amount_stress_test(user_id):
     # Record the final block after the loop finishes
     if current_state is not None:
         state_str = "🚨 FRAUD" if current_state == 1 else "✅ SAFE "
-        results.append(f"{state_str} | Rp {start_range_amount:>10,.2f}  ->  Rp 1,000,000.00")
+        results.append(f"{state_str} | Rp {start_range_amount:>10,.2f}  ->  Rp 10,000,000.00")
 
     # 5. Output the simplified map
     print("="*60)

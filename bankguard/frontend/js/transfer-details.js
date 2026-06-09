@@ -48,10 +48,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('bg_probability', data.probability || 0);
                 localStorage.setItem('bg_txID', data.transactionID || 'Unknown');
                 window.location.href = "/html/result.html";
+
             } else {
                 statusDiv.style.color = "red";
                 statusDiv.innerText = `Error: ${data.error}`;
             }
+            
         } catch (error) {
             console.error("Fetch error:", error);
             statusDiv.style.color = "red";

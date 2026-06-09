@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isFraud === 1) {
         body.className = "fraud-theme"; 
         fraudView.style.display = "block";
+        
     } else {
         body.className = "safe-theme"; 
         safeView.style.display = "block";

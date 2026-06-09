@@ -30,17 +30,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusDiv.style.color = "green";
                 statusDiv.innerText = `Welcome back, ${data.name}! Redirecting...`;
                 
-                // FIXED: Keys now match what transfer-details.js expects
                 localStorage.setItem('userID', data.userID);
                 localStorage.setItem('userName', data.name);
 
                 setTimeout(() => {
                     window.location.href = "/html/transfer-details.html";
                 }, 1500);
+
             } else {
                 statusDiv.style.color = "red";
                 statusDiv.innerText = data.error;
             }
+            
         } catch (error) {
             console.error("Login fetch error:", error);
             statusDiv.style.color = "red";

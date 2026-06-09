@@ -5,13 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault(); 
 
-        // Grab the values from the input fields
         const fullName = document.getElementById('fullName').value.trim();
         const email = document.getElementById('registerEmail').value.trim();
         const password = document.getElementById('registerPassword').value;
         const confirmPassword = document.getElementById('password_confirmation').value;
         
-        // NEW: Grab the min and max transaction values
         const avgMin = parseFloat(document.getElementById('avgMinTransaction').value);
         const avgMax = parseFloat(document.getElementById('avgMaxTransaction').value);
 
@@ -53,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     fullName: fullName,
                     email: email,
                     password: password,
-                    avgMinTransaction: avgMin, // NEW: Added to payload
-                    avgMaxTransaction: avgMax  // NEW: Added to payload
+                    avgMinTransaction: avgMin, 
+                    avgMaxTransaction: avgMax 
                 })
             });
 
@@ -67,10 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     window.location.href = "/html/index.html";
                 }, 2000);
+
             } else {
                 statusDiv.style.color = "red";
                 statusDiv.innerText = `Error: ${data.error}`;
             }
+            
         } catch (error) {
             console.error("Fetch error:", error);
             statusDiv.style.color = "red";
